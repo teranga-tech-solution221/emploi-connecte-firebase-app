@@ -9,7 +9,8 @@ import {
   signInWithPopup, 
   PhoneAuthProvider, 
   signInWithPhoneNumber, 
-  RecaptchaVerifier
+  RecaptchaVerifier,
+  sendPasswordResetEmail
 } from "firebase/auth";
 import { auth, googleProvider } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
@@ -23,6 +24,7 @@ interface AuthContextType {
   phoneConfirm: (verificationId: string, verificationCode: string) => Promise<User | null>;
   googleLogin: () => Promise<User | null>;
   logout: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -136,6 +138,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
   
+  const resetPassword = async (email: string): Promise<void> => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "Failed to send reset password email",
+      });
+      throw error;
+    }
+  };
+  
   const value: AuthContextType = {
     currentUser,
     loading,
@@ -144,7 +159,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     phoneLogin,
     phoneConfirm,
     googleLogin,
-    logout
+    logout,
+    resetPassword
   };
   
   return (
