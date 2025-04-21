@@ -119,33 +119,37 @@ const Dashboard = () => {
 
             <Card>
               <CardHeader>
+                <CardTitle>Job Activities</CardTitle>
+              </CardHeader>
+              <CardContent>
                 <Tabs defaultValue="jobs">
                   <TabsList>
                     <TabsTrigger value="jobs">Available Jobs</TabsTrigger>
                     <TabsTrigger value="applications">My Applications</TabsTrigger>
                     <TabsTrigger value="saved">Saved Jobs</TabsTrigger>
                   </TabsList>
+                  
+                  <TabsContent value="jobs" className="space-y-4 mt-4">
+                    <div className="text-center py-12">
+                      <h3 className="text-lg font-medium text-gray-500 mb-2">No job listings available</h3>
+                      <p className="text-gray-400">Job listings will appear here as they become available</p>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="applications" className="space-y-4 mt-4">
+                    <div className="text-center py-12">
+                      <h3 className="text-lg font-medium text-gray-500 mb-2">No applications yet</h3>
+                      <p className="text-gray-400">Your job applications will appear here</p>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="saved" className="space-y-4 mt-4">
+                    <div className="text-center py-12">
+                      <h3 className="text-lg font-medium text-gray-500 mb-2">No saved jobs</h3>
+                      <p className="text-gray-400">Jobs you save will appear here</p>
+                    </div>
+                  </TabsContent>
                 </Tabs>
-              </CardHeader>
-              <CardContent>
-                <TabsContent value="jobs" className="space-y-4">
-                  <div className="text-center py-12">
-                    <h3 className="text-lg font-medium text-gray-500 mb-2">No job listings available</h3>
-                    <p className="text-gray-400">Job listings will appear here as they become available</p>
-                  </div>
-                </TabsContent>
-                <TabsContent value="applications" className="space-y-4">
-                  <div className="text-center py-12">
-                    <h3 className="text-lg font-medium text-gray-500 mb-2">No applications yet</h3>
-                    <p className="text-gray-400">Your job applications will appear here</p>
-                  </div>
-                </TabsContent>
-                <TabsContent value="saved" className="space-y-4">
-                  <div className="text-center py-12">
-                    <h3 className="text-lg font-medium text-gray-500 mb-2">No saved jobs</h3>
-                    <p className="text-gray-400">Jobs you save will appear here</p>
-                  </div>
-                </TabsContent>
               </CardContent>
             </Card>
           </div>
