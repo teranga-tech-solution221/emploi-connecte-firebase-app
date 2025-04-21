@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Briefcase, LineChart, Bell } from "lucide-react";
 
 const Index = () => {
   return (
@@ -67,3 +67,4 @@ const Index = () => {
 };
 
 export default Index;
+
