@@ -33,35 +33,35 @@ import { Badge } from "@/components/ui/badge";
 // Statistiques pour le dashboard
 const stats = [
   { 
-    title: "Applications", 
+    title: "Candidatures", 
     count: 12, 
-    change: "+3 this week", 
+    change: "+3 cette semaine", 
     trend: "up", 
-    description: "Total job applications",
+    description: "Total des candidatures",
     icon: FileText 
   },
   { 
-    title: "Interviews", 
+    title: "Entretiens", 
     count: 4, 
-    change: "+2 this week", 
+    change: "+2 cette semaine", 
     trend: "up", 
-    description: "Scheduled interviews",
+    description: "Entretiens programmés",
     icon: Calendar 
   },
   { 
-    title: "Offers", 
+    title: "Offres", 
     count: 1, 
-    change: "+1 this month", 
+    change: "+1 ce mois", 
     trend: "up", 
-    description: "Job offers received",
+    description: "Offres d'emploi reçues",
     icon: Briefcase 
   },
   { 
-    title: "Saved Jobs", 
+    title: "Emplois Sauvegardés", 
     count: 8, 
-    change: "+5 this week", 
+    change: "+5 cette semaine", 
     trend: "up", 
-    description: "Jobs saved for later",
+    description: "Emplois sauvegardés pour plus tard",
     icon: Bell 
   },
 ];
@@ -71,25 +71,25 @@ const recentActivities = [
   {
     id: 1,
     type: "application",
-    title: "Applied to Senior Frontend Developer",
+    title: "Candidature pour Développeur Frontend Senior",
     company: "Tech Solutions Inc.",
-    time: "2 hours ago",
+    time: "Il y a 2 heures",
     icon: FileText,
   },
   {
     id: 2,
     type: "interview",
-    title: "Interview scheduled for UI/UX Designer",
+    title: "Entretien programmé pour Designer UI/UX",
     company: "Creative Designs Co.",
-    time: "Yesterday",
+    time: "Hier",
     icon: Calendar,
   },
   {
     id: 3,
     type: "offer",
-    title: "Received offer for Backend Developer",
+    title: "Offre reçue pour Développeur Backend",
     company: "Data Innovations Ltd.",
-    time: "3 days ago",
+    time: "Il y a 3 jours",
     icon: Briefcase,
   },
 ];
@@ -98,27 +98,27 @@ const recentActivities = [
 const upcomingEvents = [
   {
     id: 1,
-    title: "Technical Interview",
+    title: "Entretien Technique",
     company: "Tech Solutions Inc.",
-    date: "Apr 25, 2025",
-    time: "2:00 PM",
+    date: "25 avr. 2025",
+    time: "14:00",
   },
   {
     id: 2,
-    title: "Phone Screening",
+    title: "Entretien Téléphonique",
     company: "Innovative Solutions",
-    date: "Apr 22, 2025",
-    time: "11:30 AM",
+    date: "22 avr. 2025",
+    time: "11:30",
   },
 ];
 
 // Statistiques des candidatures par statut
 const applicationStats = [
-  { status: "Applied", count: 5, color: "bg-blue-500" },
-  { status: "Screening", count: 3, color: "bg-purple-500" },
-  { status: "Interview", count: 2, color: "bg-yellow-500" },
-  { status: "Offer", count: 1, color: "bg-green-500" },
-  { status: "Rejected", count: 1, color: "bg-red-500" },
+  { status: "Postulé", count: 5, color: "bg-blue-500" },
+  { status: "Présélection", count: 3, color: "bg-purple-500" },
+  { status: "Entretien", count: 2, color: "bg-yellow-500" },
+  { status: "Offre", count: 1, color: "bg-green-500" },
+  { status: "Refusé", count: 1, color: "bg-red-500" },
 ];
 
 const Dashboard = () => {
@@ -142,11 +142,11 @@ const Dashboard = () => {
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
               <div className="flex items-center gap-4">
                 <SidebarTrigger />
-                <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Tableau de bord</h1>
               </div>
               <Button onClick={() => navigate('/applications')} className="gap-2">
                 <PlusCircle className="h-4 w-4" />
-                New Application
+                Nouvelle candidature
               </Button>
             </div>
           </header>
@@ -164,9 +164,9 @@ const Dashboard = () => {
                         <h3 className="text-3xl font-bold mt-1">{stat.count}</h3>
                       </div>
                       <div className={`rounded-full p-2 ${
-                        stat.title === "Applications" ? "bg-blue-100 text-blue-600" :
-                        stat.title === "Interviews" ? "bg-yellow-100 text-yellow-600" :
-                        stat.title === "Offers" ? "bg-green-100 text-green-600" :
+                        stat.title === "Candidatures" ? "bg-blue-100 text-blue-600" :
+                        stat.title === "Entretiens" ? "bg-yellow-100 text-yellow-600" :
+                        stat.title === "Offres" ? "bg-green-100 text-green-600" :
                         "bg-purple-100 text-purple-600"
                       }`}>
                         <stat.icon className="h-5 w-5" />
@@ -188,8 +188,8 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <Card className="lg:col-span-2">
                 <CardHeader className="pb-2">
-                  <CardTitle>Applications Overview</CardTitle>
-                  <CardDescription>Track your job application progress</CardDescription>
+                  <CardTitle>Aperçu des candidatures</CardTitle>
+                  <CardDescription>Suivez l'avancement de vos candidatures</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -205,7 +205,7 @@ const Dashboard = () => {
                   </div>
 
                   <div className="mt-8">
-                    <h4 className="text-sm font-medium mb-4">Recent Activity</h4>
+                    <h4 className="text-sm font-medium mb-4">Activité récente</h4>
                     <div className="space-y-4">
                       {recentActivities.map((activity) => (
                         <div key={activity.id} className="flex gap-3">
@@ -225,7 +225,7 @@ const Dashboard = () => {
                       ))}
                     </div>
                     <Button variant="ghost" size="sm" className="mt-4 w-full justify-between">
-                      View all activity <ArrowRight className="h-4 w-4" />
+                      Voir toute l'activité <ArrowRight className="h-4 w-4" />
                     </Button>
                   </div>
                 </CardContent>
@@ -233,8 +233,8 @@ const Dashboard = () => {
 
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle>Upcoming Events</CardTitle>
-                  <CardDescription>Your scheduled interviews and deadlines</CardDescription>
+                  <CardTitle>Événements à venir</CardTitle>
+                  <CardDescription>Vos entretiens et échéances programmés</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -250,7 +250,7 @@ const Dashboard = () => {
                             <div className="flex items-center gap-1 mt-2">
                               <Clock className="h-3 w-3 text-muted-foreground" />
                               <p className="text-xs text-muted-foreground">
-                                {event.date} at {event.time}
+                                {event.date} à {event.time}
                               </p>
                             </div>
                           </div>
@@ -258,21 +258,21 @@ const Dashboard = () => {
                       ))
                     ) : (
                       <div className="text-center py-8">
-                        <p className="text-muted-foreground">No upcoming events</p>
+                        <p className="text-muted-foreground">Aucun événement à venir</p>
                       </div>
                     )}
                   </div>
 
                   <div className="mt-6 pt-6 border-t">
-                    <h4 className="text-sm font-medium mb-4">Suggested Actions</h4>
+                    <h4 className="text-sm font-medium mb-4">Actions suggérées</h4>
                     <div className="space-y-3">
                       <Button variant="outline" size="sm" className="w-full justify-start gap-2">
                         <PlusCircle className="h-4 w-4" />
-                        Add new application
+                        Ajouter une candidature
                       </Button>
                       <Button variant="outline" size="sm" className="w-full justify-start gap-2">
                         <User className="h-4 w-4" />
-                        Complete your profile
+                        Compléter votre profil
                       </Button>
                     </div>
                   </div>
@@ -282,8 +282,8 @@ const Dashboard = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Application Timeline</CardTitle>
-                <CardDescription>View and track your recent job applications</CardDescription>
+                <CardTitle>Chronologie des candidatures</CardTitle>
+                <CardDescription>Visualisez et suivez vos récentes candidatures</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="relative">
@@ -309,8 +309,8 @@ const Dashboard = () => {
                               activity.type === "interview" ? "bg-yellow-100 text-yellow-800 border-yellow-200" :
                               "bg-green-100 text-green-800 border-green-200"
                             }`}>
-                              {activity.type === "application" ? "Applied" :
-                               activity.type === "interview" ? "Interview" : "Offer"}
+                              {activity.type === "application" ? "Candidature" :
+                               activity.type === "interview" ? "Entretien" : "Offre"}
                             </Badge>
                           </div>
                           <p className="text-xs text-muted-foreground mt-2">{activity.time}</p>
