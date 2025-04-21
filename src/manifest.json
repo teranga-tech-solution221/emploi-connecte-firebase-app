@@ -1,7 +1,7 @@
 
 {
-  "name": "Emploi Connecté",
-  "short_name": "Emploi Connecté",
+  "name": "FABUS",
+  "short_name": "FABUS",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
