@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -99,18 +98,15 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100 p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-indigo-600">Emploi Connecté</h1>
-          <p className="text-slate-600 mt-2">Connect with employers and find your dream job</p>
-        </div>
-        
-        <Card className="w-full shadow-xl">
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/30 via-purple-500/30 to-pink-500/30 backdrop-blur-3xl" />
+      
+      <div className="w-full max-w-md relative z-10">        
+        <Card className="w-full shadow-xl bg-white/80 backdrop-blur-sm">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">Sign in</CardTitle>
+            <CardTitle className="text-2xl text-center">Se connecter</CardTitle>
             <CardDescription className="text-center">
-              Choose your preferred login method
+              Choisissez votre méthode de connexion
             </CardDescription>
           </CardHeader>
           
@@ -142,7 +138,7 @@ const Login = () => {
                     <div className="flex items-center justify-between">
                       <Label htmlFor="password">Password</Label>
                       <Link to="/auth/forgot-password" className="text-xs text-indigo-600 hover:underline">
-                        Forgot password?
+                        Mot de passe oublié?
                       </Link>
                     </div>
                     <div className="relative">
@@ -166,11 +162,11 @@ const Login = () => {
                     {emailLoading ? (
                       <div className="flex items-center">
                         <span className="animate-spin mr-2 h-4 w-4 border-t-2 border-b-2 border-white rounded-full" />
-                        Signing in...
+                        Connexion en cours...
                       </div>
                     ) : (
                       <div className="flex items-center">
-                        Sign in <ArrowRight className="ml-2 h-4 w-4" />
+                        Se connecter <ArrowRight className="ml-2 h-4 w-4" />
                       </div>
                     )}
                   </Button>
@@ -180,7 +176,7 @@ const Login = () => {
               <TabsContent value="phone">
                 <form onSubmit={handlePhoneLogin} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
+                    <Label htmlFor="phone">Numéro de téléphone</Label>
                     <div className="relative">
                       <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
@@ -195,7 +191,7 @@ const Login = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="phonePassword">Password</Label>
+                    <Label htmlFor="phonePassword">Mot de passe</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
@@ -217,11 +213,11 @@ const Login = () => {
                     {phoneLoading ? (
                       <div className="flex items-center">
                         <span className="animate-spin mr-2 h-4 w-4 border-t-2 border-b-2 border-white rounded-full" />
-                        Signing in...
+                        Connexion en cours...
                       </div>
                     ) : (
                       <div className="flex items-center">
-                        Sign in <ArrowRight className="ml-2 h-4 w-4" />
+                        Se connecter <ArrowRight className="ml-2 h-4 w-4" />
                       </div>
                     )}
                   </Button>
@@ -234,7 +230,7 @@ const Login = () => {
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                <span className="px-2 bg-white text-gray-500">Ou continuez avec</span>
               </div>
             </div>
             
@@ -248,7 +244,7 @@ const Login = () => {
               {googleLoading ? (
                 <div className="flex items-center justify-center">
                   <span className="animate-spin mr-2 h-4 w-4 border-t-2 border-b-2 border-indigo-600 rounded-full" />
-                  Connecting...
+                  Connexion en cours...
                 </div>
               ) : (
                 <div className="flex items-center">
@@ -266,15 +262,14 @@ const Login = () => {
           
           <CardFooter className="flex flex-col space-y-4">
             <div className="text-center text-sm">
-              Don't have an account?{" "}
+              Vous n'avez pas de compte?{" "}
               <Link to="/auth/register" className="text-indigo-600 hover:underline font-medium">
-                Sign up
+                S'inscrire
               </Link>
             </div>
           </CardFooter>
         </Card>
         
-        {/* Hidden recaptcha container for phone authentication */}
         <div id="recaptcha-container"></div>
       </div>
     </div>

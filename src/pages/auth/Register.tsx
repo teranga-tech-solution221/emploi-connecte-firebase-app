@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -93,18 +92,15 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100 p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-indigo-600">Emploi Connecté</h1>
-          <p className="text-slate-600 mt-2">Create your account and get started</p>
-        </div>
-        
-        <Card className="w-full shadow-xl">
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/30 via-purple-500/30 to-pink-500/30 backdrop-blur-3xl" />
+      
+      <div className="w-full max-w-md relative z-10">
+        <Card className="w-full shadow-xl bg-white/80 backdrop-blur-sm">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">Create an account</CardTitle>
+            <CardTitle className="text-2xl text-center">Créer un compte</CardTitle>
             <CardDescription className="text-center">
-              Enter your details to create your account
+              Entrez vos informations pour créer votre compte
             </CardDescription>
           </CardHeader>
           
@@ -112,7 +108,7 @@ const Register = () => {
             <form onSubmit={handleRegister} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
+                  <Label htmlFor="firstName">Prénom</Label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -128,7 +124,7 @@ const Register = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
+                  <Label htmlFor="lastName">Nom</Label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -161,7 +157,7 @@ const Register = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number (Optional)</Label>
+                <Label htmlFor="phone">Numéro de téléphone (Optionnel)</Label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -176,20 +172,20 @@ const Register = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="userType">I am a</Label>
+                <Label htmlFor="userType">Je suis un(e)</Label>
                 <Select value={userType} onValueChange={setUserType}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select account type" />
+                    <SelectValue placeholder="Choisissez le type de compte" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="job-seeker">Job Seeker</SelectItem>
-                    <SelectItem value="employer">Employer</SelectItem>
+                    <SelectItem value="job-seeker">Chercheur d'emploi</SelectItem>
+                    <SelectItem value="employer">Employeur</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Mot de passe</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -205,7 +201,7 @@ const Register = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -228,11 +224,11 @@ const Register = () => {
                 {loading ? (
                   <div className="flex items-center">
                     <span className="animate-spin mr-2 h-4 w-4 border-t-2 border-b-2 border-white rounded-full" />
-                    Creating account...
+                    Création du compte...
                   </div>
                 ) : (
                   <div className="flex items-center">
-                    Create account <ArrowRight className="ml-2 h-4 w-4" />
+                    Créer le compte <ArrowRight className="ml-2 h-4 w-4" />
                   </div>
                 )}
               </Button>
@@ -243,7 +239,7 @@ const Register = () => {
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or sign up with</span>
+                <span className="px-2 bg-white text-gray-500">Ou inscrivez-vous avec</span>
               </div>
             </div>
             
@@ -257,7 +253,7 @@ const Register = () => {
               {googleLoading ? (
                 <div className="flex items-center justify-center">
                   <span className="animate-spin mr-2 h-4 w-4 border-t-2 border-b-2 border-indigo-600 rounded-full" />
-                  Connecting...
+                  Connexion...
                 </div>
               ) : (
                 <div className="flex items-center">
@@ -275,9 +271,9 @@ const Register = () => {
           
           <CardFooter className="flex flex-col space-y-4">
             <div className="text-center text-sm">
-              Already have an account?{" "}
+              Déjà un compte ?{" "}
               <Link to="/auth/login" className="text-indigo-600 hover:underline font-medium">
-                Sign in
+                Se connecter
               </Link>
             </div>
           </CardFooter>
