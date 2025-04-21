@@ -6,15 +6,25 @@ import LoadingSpinner from "./LoadingSpinner";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
+  redirectIfAuthenticated?: boolean;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
+  children, 
+  redirectIfAuthenticated = false 
+}) => {
   const { currentUser, loading } = useAuth();
 
   if (loading) {
     return <LoadingSpinner />;
   }
 
+  // Si l'utilisateur est connecté et que redirectIfAuthenticated est true
+  if (currentUser && redirectIfAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  // Redirection vers le login si l'utilisateur n'est pas connecté
   if (!currentUser) {
     return <Navigate to="/auth/login" replace />;
   }
@@ -23,3 +33,4 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 };
 
 export default ProtectedRoute;
+
