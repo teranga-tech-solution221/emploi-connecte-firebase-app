@@ -37,17 +37,10 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* Page d'accueil - redirige vers le dashboard si connecté */}
-            <Route 
-              path="/" 
-              element={
-                <ProtectedRoute redirectIfAuthenticated>
-                  <Index />
-                </ProtectedRoute>
-              } 
-            />
+            {/* Page d'accueil - accessible à tous, mais redirige vers le dashboard si connecté */}
+            <Route path="/" element={<Index />} />
             
-            {/* Routes d'authentification */}
+            {/* Routes d'authentification - accessibles seulement si non connecté */}
             <Route 
               path="/auth/login" 
               element={
@@ -56,10 +49,24 @@ const App = () => (
                 </ProtectedRoute>
               } 
             />
-            <Route path="/auth/register" element={<Register />} />
-            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+            <Route 
+              path="/auth/register" 
+              element={
+                <ProtectedRoute redirectIfAuthenticated>
+                  <Register />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/auth/forgot-password" 
+              element={
+                <ProtectedRoute redirectIfAuthenticated>
+                  <ForgotPassword />
+                </ProtectedRoute>
+              } 
+            />
             
-            {/* Routes protégées */}
+            {/* Routes protégées - accessibles seulement si connecté */}
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
@@ -77,4 +84,3 @@ const App = () => (
 );
 
 export default App;
-

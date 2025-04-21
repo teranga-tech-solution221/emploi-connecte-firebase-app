@@ -24,8 +24,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to="/dashboard" replace />;
   }
 
-  // Redirection vers le login si l'utilisateur n'est pas connecté
-  if (!currentUser) {
+  // Redirection vers le login si l'utilisateur n'est pas connecté et que ce n'est pas une page publique
+  if (!currentUser && !redirectIfAuthenticated) {
     return <Navigate to="/auth/login" replace />;
   }
 
@@ -33,4 +33,3 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 };
 
 export default ProtectedRoute;
-
