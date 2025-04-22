@@ -28,7 +28,7 @@ const Login = () => {
   // Google login state
   const [googleLoading, setGoogleLoading] = useState(false);
 
-  // Faux loading "after login"
+  // Animation après connexion réussie
   const [postLoginLoading, setPostLoginLoading] = useState(false);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
@@ -110,7 +110,7 @@ const Login = () => {
     }
   };
 
-  // Si le faux chargement est actif, on affiche le spinner sur toute la page !
+  // Si le chargement post-connexion est actif, afficher l'animation sur toute la page
   if (postLoginLoading) {
     return <LoadingSpinner />;
   }
@@ -120,7 +120,7 @@ const Login = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/30 via-purple-500/30 to-pink-500/30 dark:from-indigo-900/50 dark:via-purple-900/50 dark:to-pink-900/50 backdrop-blur-3xl" />
 
       <div className="w-full max-w-md relative z-10">
-        <Card className="w-full shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
+        <Card className="w-full shadow-xl dark:bg-gray-900 bg-white/80 dark:bg-slate-800/90 backdrop-blur-sm border-0 dark:border dark:border-gray-700">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl text-center dark:text-white">Se connecter</CardTitle>
             <CardDescription className="text-center dark:text-gray-300">

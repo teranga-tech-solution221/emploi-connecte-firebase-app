@@ -53,3 +53,8 @@
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
 }
+
+/* Suppression de tout background blanc en mode sombre */
+.dark .bg-white {
+  background-color: hsl(var(--background)) !important;
+}

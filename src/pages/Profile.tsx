@@ -1,10 +1,9 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
@@ -24,19 +23,16 @@ const Profile = () => {
   const [photoLoading, setPhotoLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Ajout d'un état pour le CV
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [cvLoading, setCvLoading] = useState(false);
   const [cvURL, setCvURL] = useState<string | null>(null);
 
-  // Vérifier si le CV existe déjà dans Firebase Storage
   useEffect(() => {
     if (currentUser) {
       const cvRef = ref(storage, `cvs/${currentUser.uid}/cv.pdf`);
       getDownloadURL(cvRef).then(url => {
         setCvURL(url);
       }).catch(error => {
-        // Le CV n'existe pas encore, pas d'erreur à afficher
         console.log("No CV found");
       });
     }
@@ -48,22 +44,20 @@ const Profile = () => {
     
     try {
       if (currentUser) {
-        // Mise à jour du nom d'affichage
         await updateProfile(currentUser, {
           displayName: displayName
         });
         
-        // Si une nouvelle photo a été téléchargée, la mettre à jour
         if (photoFile) {
           const storageRef = ref(storage, `profile-photos/${currentUser.uid}`);
           await uploadBytes(storageRef, photoFile);
-          const photoURL = await getDownloadURL(storageRef);
+          const newPhotoURL = await getDownloadURL(storageRef);
           
           await updateProfile(currentUser, {
-            photoURL: photoURL
+            photoURL: newPhotoURL
           });
           
-          setPhotoURL(photoURL);
+          setPhotoURL(newPhotoURL);
         }
         
         toast({
@@ -89,7 +83,6 @@ const Profile = () => {
       setPhotoLoading(true);
       setPhotoFile(file);
       
-      // Aperçu de l'image avant téléchargement
       const reader = new FileReader();
       reader.onloadend = () => {
         setPhotoURL(reader.result as string);
@@ -99,14 +92,12 @@ const Profile = () => {
     }
   };
 
-  // Gérer le téléchargement de CV
   const handleCvChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.type === "application/pdf" && currentUser) {
       setCvLoading(true);
       
       try {
-        // Upload du CV à Firebase Storage
         const cvStorageRef = ref(storage, `cvs/${currentUser.uid}/cv.pdf`);
         await uploadBytes(cvStorageRef, file);
         const downloadURL = await getDownloadURL(cvStorageRef);
@@ -150,20 +141,18 @@ const Profile = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen flex w-full dark:bg-gray-900">
         <AppSidebar />
         <div className="flex-1">
-          {/* Header */}
-          <header className="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700">
+          <header className="shadow-sm border-b dark:border-gray-800">
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
               <div className="flex items-center gap-4">
                 <SidebarTrigger />
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Profil</h1>
+                <h1 className="text-2xl font-bold">Profil</h1>
               </div>
             </div>
           </header>
 
-          {/* Main content */}
           <main className="p-4 sm:p-6 lg:p-8 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="md:col-span-1">
@@ -196,7 +185,6 @@ const Profile = () => {
                   </CardContent>
                 </Card>
 
-                {/* Bloc CV */}
                 <Card className="mt-6 dark:bg-gray-800 dark:border-gray-700">
                   <CardHeader>
                     <CardTitle className="dark:text-white">Ajouter votre CV</CardTitle>

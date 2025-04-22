@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -13,23 +12,12 @@ import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useThemeMode, ThemeMode } from "@/hooks/useThemeMode";
-import LoadingSpinner from "@/components/LoadingSpinner";
 import { Moon, Sun, Monitor } from "lucide-react";
 
 const Settings = () => {
   const { currentUser } = useAuth();
   const { toast } = useToast();
   const { theme, setThemeMode } = useThemeMode();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Simuler un temps de chargement
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-    
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleSaveChanges = () => {
     toast({
@@ -42,10 +30,6 @@ const Settings = () => {
     if (!name) return "U";
     return name.charAt(0).toUpperCase();
   };
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <SidebarProvider>

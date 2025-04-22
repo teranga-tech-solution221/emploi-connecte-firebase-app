@@ -46,41 +46,41 @@
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 210 40% 98%;
+    --background: 240 10% 3.9%; /* Noir pur pour le fond */
+    --foreground: 210 40% 98%; /* Texte blanc pour contraste */
 
-    --card: 240 10% 3.9%;
+    --card: 240 10% 3.9%; /* Cartes en noir pur */
     --card-foreground: 210 40% 98%;
 
     --popover: 240 10% 3.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
+    --primary: 210 40% 98%; /* Primary en blanc */
     --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 240 10% 10%; /* Secondary légèrement plus clair que le fond */
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 240 10% 10%;
+    --muted-foreground: 215 20.2% 75%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 240 10% 10%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
+    --border: 240 10% 10%;
+    --input: 240 10% 10%;
     --ring: 212.7 26.8% 83.9%;
 
-    --sidebar-background: 240 10% 3.9%;
+    --sidebar-background: 240 10% 3.9%; /* Noir pur pour le sidebar */
     --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 8% 15%;
+    --sidebar-accent: 240 10% 10%;
     --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 240 8% 15%;
+    --sidebar-border: 240 10% 10%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
@@ -95,9 +95,8 @@
   }
   
   .dark body {
-    background-image: radial-gradient(circle at top right, 
-      hsl(240, 10%, 8%) 0%, 
-      hsl(240, 10%, 3.9%) 50%);
+    background-color: hsl(240, 10%, 3.9%); /* Noir uniforme */
+    background-image: none; /* Pas de gradient */
   }
   
   header, 
@@ -116,18 +115,18 @@
   /* Amélioration du contraste pour les pages d'authentification en mode sombre */
   .dark .card,
   .dark [class*='bg-white'] {
-    @apply bg-slate-800/90 backdrop-blur-sm border-white/5 text-white;
+    @apply bg-slate-900 backdrop-blur-sm border-white/5 text-white;
   }
   
   .dark .relative span.px-2.bg-white.text-gray-500 {
-    @apply bg-slate-800 text-gray-300;
+    @apply bg-slate-900 text-gray-200;
   }
   
   .dark .text-gray-500,
   .dark .text-gray-600,
   .dark .text-slate-600,
   .dark .text-slate-700 {
-    @apply text-gray-300;
+    @apply text-gray-200;
   }
   
   .dark .text-indigo-600 {
@@ -136,6 +135,13 @@
   
   .dark label {
     @apply text-gray-200;
+  }
+
+  /* Amélioration spécifique pour les champs de formulaire en mode sombre */
+  .dark input, 
+  .dark select, 
+  .dark textarea {
+    @apply bg-slate-800 border-slate-700 text-white;
   }
 }
 
@@ -153,11 +159,11 @@
   }
   
   .dark-card {
-    @apply dark:bg-secondary/80 dark:backdrop-blur-md dark:border-white/5;
+    @apply dark:bg-slate-900 dark:backdrop-blur-md dark:border-white/5;
   }
   
   /* Amélioration du contraste pour les éléments de carte en mode sombre */
   .auth-card-dark {
-    @apply bg-slate-800/90 text-white border-white/5;
+    @apply bg-slate-900 text-white border-white/5;
   }
 }
