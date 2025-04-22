@@ -1,21 +1,21 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { layoutDashboard, rocket, star, bell } from "lucide-react";
+import { LayoutDashboard, Rocket, Star, Bell } from "lucide-react";
 
 const features = [
   {
-    icon: layoutDashboard,
+    icon: LayoutDashboard,
     title: "Tableau intuitif",
     desc: "Pilotez toutes vos candidatures sur une interface claire et rapide, sans vous perdre.",
   },
   {
-    icon: rocket,
+    icon: Rocket,
     title: "Boost d'efficacité",
     desc: "Des outils et des rappels pour accélérer votre recherche et saisir chaque opportunité.",
   },
   {
-    icon: bell,
+    icon: Bell,
     title: "Suivi intelligent",
     desc: "Soyez notifié à chaque étape et ne ratez plus jamais une relance ou une réponse.",
   },
