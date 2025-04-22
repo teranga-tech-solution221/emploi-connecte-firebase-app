@@ -1,4 +1,3 @@
-
 import React from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -12,10 +11,12 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useThemeMode, ThemeMode } from "@/hooks/useThemeMode";
 
 const Settings = () => {
   const { currentUser } = useAuth();
   const { toast } = useToast();
+  const { theme, setThemeMode } = useThemeMode();
 
   const handleSaveChanges = () => {
     toast({
@@ -232,15 +233,26 @@ const Settings = () => {
                   <CardContent className="space-y-6">
                     <div className="space-y-4">
                       <h3 className="font-medium">Thème</h3>
-                      
                       <div className="grid grid-cols-3 gap-4">
-                        <Button variant="outline" className="border-primary aspect-[3/2] flex items-center justify-center h-auto">
+                        <Button
+                          variant={theme === "light" ? "default" : "outline"}
+                          className="border-primary aspect-[3/2] flex items-center justify-center h-auto"
+                          onClick={() => setThemeMode("light")}
+                        >
                           Clair
                         </Button>
-                        <Button variant="outline" className="aspect-[3/2] flex items-center justify-center h-auto">
+                        <Button
+                          variant={theme === "dark" ? "default" : "outline"}
+                          className="aspect-[3/2] flex items-center justify-center h-auto"
+                          onClick={() => setThemeMode("dark")}
+                        >
                           Sombre
                         </Button>
-                        <Button variant="outline" className="aspect-[3/2] flex items-center justify-center h-auto">
+                        <Button
+                          variant={theme === "system" ? "default" : "outline"}
+                          className="aspect-[3/2] flex items-center justify-center h-auto"
+                          onClick={() => setThemeMode("system")}
+                        >
                           Système
                         </Button>
                       </div>
@@ -260,4 +272,3 @@ const Settings = () => {
 };
 
 export default Settings;
-
