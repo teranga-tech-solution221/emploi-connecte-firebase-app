@@ -18,14 +18,14 @@ const NotFound = () => {
     <div className="min-h-screen flex items-center justify-center bg-background text-foreground p-4">
       <div className="text-center">
         <div className="inline-block p-6 bg-card rounded-full shadow-lg mb-6">
-          <div className="text-7xl font-bold text-primary">404</div>
+          <div className="text-7xl font-bold">404</div>
         </div>
         <h1 className="text-3xl font-bold mb-3">Page Not Found</h1>
         <p className="text-xl mb-8">
           Oops! The page you're looking for doesn't exist.
         </p>
         <Link to="/auth/login">
-          <Button className="bg-indigo-600 hover:bg-indigo-700">
+          <Button>
             <Home className="mr-2 h-4 w-4" /> Return to Home
           </Button>
         </Link>

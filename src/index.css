@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -45,42 +46,42 @@
   }
 
   .dark {
-    --background: 240 10% 3.9%; /* Noir pur pour le fond */
-    --foreground: 210 40% 98%; /* Texte blanc pour contraste */
+    --background: 0 0% 0%; /* Noir pur pour le fond */
+    --foreground: 0 0% 100%; /* Texte blanc pur pour contraste */
 
-    --card: 240 10% 3.9%; /* Cartes en noir pur */
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 0%; /* Cartes en noir pur */
+    --card-foreground: 0 0% 100%;
 
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 210 40% 98%; /* Primary en blanc */
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 0 0% 100%; /* Primary en blanc pur */
+    --primary-foreground: 0 0% 0%; /* Texte noir sur boutons blancs */
 
-    --secondary: 240 10% 10%; /* Secondary légèrement plus clair que le fond */
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 5%; /* Secondary légèrement plus clair que le fond */
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 240 10% 10%;
-    --muted-foreground: 215 20.2% 75%;
+    --muted: 0 0% 5%;
+    --muted-foreground: 0 0% 80%;
 
-    --accent: 240 10% 10%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 0 0% 5%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 240 10% 10%;
-    --input: 240 10% 10%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 0 0% 10%;
+    --input: 0 0% 10%;
+    --ring: 0 0% 80%;
 
-    --sidebar-background: 240 10% 3.9%; /* Noir pur pour le sidebar */
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 10% 10%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 240 10% 10%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 0%; /* Noir pur pour le sidebar */
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 5%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 10%;
+    --sidebar-ring: 0 0% 100%;
   }
 }
 
@@ -99,61 +100,91 @@
   }
   
   .dark body, .dark #root {
-    background-color: hsl(240, 10%, 3.9%) !important;
-    color: hsl(210, 40%, 98%) !important;
+    background-color: black !important;
+    color: white !important;
     background-image: none !important;
   }
 
-  header, 
-  .bg-white, 
-  [class*='bg-gray-'],
-  [class*='bg-slate-'] {
-    @apply dark:bg-background dark:text-foreground;
+  /* Forcer TOUTES les barres d'en-tête et backgrounds à être noirs en mode sombre */
+  .dark header, 
+  .dark nav,
+  .dark .bg-white, 
+  .dark [class*='bg-gray-'],
+  .dark [class*='bg-slate-'],
+  .dark [class*='bg-blue-'],
+  .dark [class*='bg-indigo-'] {
+    @apply bg-black text-white !important;
+    background-image: none !important;
   }
 
-  input, 
-  select, 
-  textarea {
-    @apply dark:bg-secondary dark:text-foreground;
+  /* Forcer tous les inputs à avoir le bon style en mode sombre */
+  .dark input, 
+  .dark select, 
+  .dark textarea {
+    @apply bg-black border-white/20 text-white !important;
   }
 
+  /* Style de carte cohérent */
   .card,
   .dark .card,
   .dark [class*='bg-white'], 
   .dark [class*='bg-gray-'],
-  .dark [class*='bg-slate-'] {
-    @apply bg-card text-card-foreground dark:bg-slate-900 dark:border-white/5 dark:text-white;
+  .dark [class*='bg-slate-'],
+  .dark [class*='bg-blue-'],
+  .dark [class*='bg-indigo-'] {
+    @apply bg-card text-card-foreground dark:bg-black dark:border-white/10 dark:text-white !important;
   }
 
-  .dark .relative span.px-2.bg-white.text-gray-500 {
-    @apply bg-slate-900 text-gray-200;
-  }
-
+  /* Correction pour tous les textes en mode sombre */
   .dark .text-gray-500,
   .dark .text-gray-600,
+  .dark .text-gray-700,
+  .dark .text-gray-800,
+  .dark .text-gray-900,
+  .dark .text-slate-500,
   .dark .text-slate-600,
-  .dark .text-slate-700 {
-    @apply text-gray-200;
+  .dark .text-slate-700,
+  .dark .text-slate-800,
+  .dark .text-slate-900,
+  .dark .text-blue-500,
+  .dark .text-blue-600,
+  .dark .text-blue-700,
+  .dark .text-blue-800,
+  .dark .text-blue-900,
+  .dark .text-indigo-500,
+  .dark .text-indigo-600,
+  .dark .text-indigo-700,
+  .dark .text-indigo-800,
+  .dark .text-indigo-900 {
+    @apply text-white !important;
   }
 
-  .dark .text-indigo-600 {
-    @apply text-indigo-400;
+  /* Boutons en mode sombre */
+  .dark .bg-primary {
+    @apply bg-white text-black !important;
+  }
+
+  .dark .text-primary {
+    @apply text-white !important;
+  }
+
+  .dark button:not([class*="bg-transparent"]):not([class*="bg-black"]) {
+    @apply bg-white text-black hover:bg-white/90 !important;
+  }
+
+  .dark button[class*="bg-transparent"], 
+  .dark button[class*="bg-black"] {
+    @apply border-white/20 text-white !important;
   }
 
   .dark label {
-    @apply text-gray-200;
-  }
-
-  .dark input, 
-  .dark select, 
-  .dark textarea {
-    @apply bg-slate-800 border-slate-700 text-white;
+    @apply text-white !important;
   }
 }
 
-/* Tous les backgrounds par défaut pour TOUTES les pages */
+/* Supprimer tous les backgrounds par défaut pour TOUTES les pages */
 .page-bg,
-.bg-gradient-to-br, /* override si pages utilisent cette classe pour les fonds */
+.bg-gradient-to-br,
 .bg-blue-100,
 .bg-indigo-50 {
   @apply bg-background !important;
@@ -171,7 +202,7 @@
   }
   
   .neo-blur {
-    @apply backdrop-blur-2xl bg-white/40 dark:bg-black/40 border border-white/10 dark:border-white/5;
+    @apply backdrop-blur-2xl bg-white/40 dark:bg-black dark:border-white/5;
   }
   
   .text-gradient {
@@ -179,11 +210,11 @@
   }
   
   .dark-card {
-    @apply dark:bg-slate-900 dark:backdrop-blur-md dark:border-white/5;
+    @apply dark:bg-black dark:backdrop-blur-md dark:border-white/5;
   }
   
   /* Amélioration du contraste pour les éléments de carte en mode sombre */
   .auth-card-dark {
-    @apply bg-slate-900 text-white border-white/5;
+    @apply bg-black text-white border-white/5;
   }
 }

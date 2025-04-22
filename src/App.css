@@ -47,14 +47,32 @@
   color-scheme: dark;
 }
 
+/* Suppression de tout background blanc en mode sombre */
 .dark .bg-white,
 .dark [class*='bg-gray-50'],
-.dark [class*='bg-slate-50'] {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
+.dark [class*='bg-slate-50'],
+.dark [class*='bg-blue-'],
+.dark [class*='bg-indigo-'] {
+  background-color: black !important;
+  color: white !important;
 }
 
-/* Suppression de tout background blanc en mode sombre */
-.dark .bg-white {
-  background-color: hsl(var(--background)) !important;
+/* Suppression de toute teinte bleue en mode sombre */
+.dark [class*='from-blue-'],
+.dark [class*='to-blue-'],
+.dark [class*='via-blue-'],
+.dark [class*='from-indigo-'],
+.dark [class*='to-indigo-'],
+.dark [class*='via-indigo-'] {
+  --tw-gradient-from: black !important;
+  --tw-gradient-to: black !important;
+  --tw-gradient-stops: black !important;
+}
+
+/* Assurer que les boutons du mode sombre soient blanc avec texte noir */
+.dark .button,
+.dark button:not(.bg-transparent):not(.border),
+.dark .bg-primary {
+  background-color: white !important;
+  color: black !important;
 }

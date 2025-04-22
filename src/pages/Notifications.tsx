@@ -1,14 +1,11 @@
-
 import React from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Bell, Calendar, MessageSquare, User, FileText } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
-// Exemple de notifications
 const notifications = [
   {
     id: 1,
@@ -60,15 +57,15 @@ const notifications = [
 const Notifications = () => {
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gray-50">
+      <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         <div className="flex-1">
           {/* Header */}
-          <header className="bg-white shadow-sm border-b">
+          <header className="shadow-sm border-b bg-background">
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
               <div className="flex items-center gap-4">
                 <SidebarTrigger />
-                <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
+                <h1 className="text-2xl font-bold text-foreground">Notifications</h1>
               </div>
               <Button variant="outline" size="sm">
                 Mark all as read

@@ -79,15 +79,15 @@ const Messages = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gray-50">
+      <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         <div className="flex-1">
           {/* Header */}
-          <header className="bg-white shadow-sm border-b">
+          <header className="shadow-sm border-b bg-background">
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
               <div className="flex items-center gap-4">
                 <SidebarTrigger />
-                <h1 className="text-2xl font-bold text-gray-900">Messages</h1>
+                <h1 className="text-2xl font-bold text-foreground">Messages</h1>
               </div>
             </div>
           </header>
@@ -96,7 +96,7 @@ const Messages = () => {
           <main className="p-0 h-[calc(100vh-64px)]">
             <div className="grid grid-cols-12 h-full">
               {/* Message list sidebar */}
-              <div className="col-span-12 md:col-span-4 lg:col-span-3 border-r h-full overflow-hidden flex flex-col">
+              <div className="col-span-12 md:col-span-4 lg:col-span-3 border-r h-full overflow-hidden flex flex-col bg-background">
                 <div className="p-3 border-b">
                   <div className="relative">
                     <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -131,14 +131,14 @@ const Messages = () => {
               </div>
 
               {/* Conversation area */}
-              <div className="hidden md:flex col-span-8 lg:col-span-9 flex-col h-full">
+              <div className="hidden md:flex col-span-8 lg:col-span-9 flex-col h-full bg-background">
                 <div className="p-4 border-b flex items-center gap-3">
                   <Avatar>
                     <AvatarImage src={null} alt="John Doe" />
                     <AvatarFallback>JD</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-medium">John Doe</p>
+                    <p className="font-medium text-foreground">John Doe</p>
                     <p className="text-xs text-muted-foreground">Tech Solutions Inc.</p>
                   </div>
                 </div>
@@ -171,9 +171,9 @@ const Messages = () => {
               </div>
               
               {/* Empty state (shown when no conversation is selected on mobile) */}
-              <div className="col-span-12 md:hidden flex items-center justify-center h-full bg-muted/50">
+              <div className="col-span-12 md:hidden flex items-center justify-center h-full bg-background">
                 <div className="text-center p-4">
-                  <h3 className="font-medium text-lg">No conversation selected</h3>
+                  <h3 className="font-medium text-lg text-foreground">No conversation selected</h3>
                   <p className="text-muted-foreground text-sm">Choose a conversation from the list</p>
                 </div>
               </div>

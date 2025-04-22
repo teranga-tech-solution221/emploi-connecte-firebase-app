@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -235,24 +234,7 @@ const Settings = () => {
                   <CardContent className="space-y-6">
                     <div className="space-y-4">
                       <h3 className="font-medium">Thème</h3>
-                      <div className="grid grid-cols-2 gap-4">
-                        <Button
-                          variant={theme === "light" ? "default" : "outline"}
-                          className="border-primary aspect-[3/2] flex flex-col items-center justify-center gap-2 h-auto"
-                          onClick={() => setThemeMode("light")}
-                        >
-                          <Sun className="h-5 w-5" />
-                          Clair
-                        </Button>
-                        <Button
-                          variant={theme === "dark" ? "default" : "outline"}
-                          className="aspect-[3/2] flex flex-col items-center justify-center gap-2 h-auto"
-                          onClick={() => setThemeMode("dark")}
-                        >
-                          <Moon className="h-5 w-5" />
-                          Sombre
-                        </Button>
-                      </div>
+                      <p className="text-muted-foreground">Le thème peut être changé en utilisant l'icône située à côté du logo dans la barre latérale.</p>
                     </div>
                   </CardContent>
                   <CardFooter>
