@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { useState, useEffect } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -12,11 +13,23 @@ import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useThemeMode, ThemeMode } from "@/hooks/useThemeMode";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { Moon, Sun, Monitor } from "lucide-react";
 
 const Settings = () => {
   const { currentUser } = useAuth();
   const { toast } = useToast();
   const { theme, setThemeMode } = useThemeMode();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simuler un temps de chargement
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSaveChanges = () => {
     toast({
@@ -30,17 +43,21 @@ const Settings = () => {
     return name.charAt(0).toUpperCase();
   };
 
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gray-50">
+      <div className="min-h-screen flex w-full">
         <AppSidebar />
         <div className="flex-1">
           {/* Header */}
-          <header className="bg-white shadow-sm border-b">
+          <header className="shadow-sm border-b">
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
               <div className="flex items-center gap-4">
                 <SidebarTrigger />
-                <h1 className="text-2xl font-bold text-gray-900">Paramètres</h1>
+                <h1 className="text-2xl font-bold">Paramètres</h1>
               </div>
             </div>
           </header>
@@ -225,9 +242,9 @@ const Settings = () => {
               </TabsContent>
               
               <TabsContent value="appearance" className="space-y-6">
-                <Card>
+                <Card className="dark-card">
                   <CardHeader>
-                    <CardTitle>Paramètres d’apparence</CardTitle>
+                    <CardTitle>Paramètres d'apparence</CardTitle>
                     <CardDescription>Personnalisez le look de JobTracker</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
@@ -236,23 +253,26 @@ const Settings = () => {
                       <div className="grid grid-cols-3 gap-4">
                         <Button
                           variant={theme === "light" ? "default" : "outline"}
-                          className="border-primary aspect-[3/2] flex items-center justify-center h-auto"
+                          className="border-primary aspect-[3/2] flex flex-col items-center justify-center gap-2 h-auto"
                           onClick={() => setThemeMode("light")}
                         >
+                          <Sun className="h-5 w-5" />
                           Clair
                         </Button>
                         <Button
                           variant={theme === "dark" ? "default" : "outline"}
-                          className="aspect-[3/2] flex items-center justify-center h-auto"
+                          className="aspect-[3/2] flex flex-col items-center justify-center gap-2 h-auto"
                           onClick={() => setThemeMode("dark")}
                         >
+                          <Moon className="h-5 w-5" />
                           Sombre
                         </Button>
                         <Button
                           variant={theme === "system" ? "default" : "outline"}
-                          className="aspect-[3/2] flex items-center justify-center h-auto"
+                          className="aspect-[3/2] flex flex-col items-center justify-center gap-2 h-auto"
                           onClick={() => setThemeMode("system")}
                         >
+                          <Monitor className="h-5 w-5" />
                           Système
                         </Button>
                       </div>

@@ -9,9 +9,13 @@ export function useThemeMode() {
   const [theme, setTheme] = useState<ThemeMode>(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem(THEME_KEY) as ThemeMode | null;
-      return stored || "system";
+      if (stored) return stored;
+      
+      // Si rien n'est stocké, 'light' est la valeur par défaut
+      localStorage.setItem(THEME_KEY, "light");
+      return "light";
     }
-    return "system";
+    return "light"; // Défaut à la lumière si window n'est pas disponible
   });
 
   useEffect(() => {
