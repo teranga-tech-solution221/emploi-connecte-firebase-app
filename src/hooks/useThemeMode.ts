@@ -1,4 +1,6 @@
 
+// Correction : s’assurer qu’on n’active le mode dark QUE quand il est choisi ou “system” en mode sombre.
+// Ne pas "forcer" le dark lors d’un simple accès aux paramètres.
 import { useEffect, useState } from "react";
 
 export type ThemeMode = "light" | "dark" | "system";
@@ -10,12 +12,10 @@ export function useThemeMode() {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem(THEME_KEY) as ThemeMode | null;
       if (stored) return stored;
-      
-      // Si rien n'est stocké, 'light' est la valeur par défaut
       localStorage.setItem(THEME_KEY, "light");
       return "light";
     }
-    return "light"; // Défaut à la lumière si window n'est pas disponible
+    return "light";
   });
 
   useEffect(() => {
@@ -35,8 +35,6 @@ export function useThemeMode() {
       }
     }
 
-    // On n'applique le thème qu'une seule fois au démarrage, pas à chaque changement d'état
-    // pour que le mode sombre ne soit activé que lorsque l'utilisateur le choisit explicitement
     applyTheme(theme);
 
     if (theme === "system") {
@@ -52,8 +50,6 @@ export function useThemeMode() {
   const setThemeMode = (mode: ThemeMode) => {
     setTheme(mode);
     localStorage.setItem(THEME_KEY, mode);
-    
-    // Appliquer immédiatement le nouveau thème quand l'utilisateur choisit explicitement
     const root = window.document.documentElement;
     if (mode === "dark") {
       root.classList.add("dark");
