@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -8,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, Lock, Phone, ArrowRight } from "lucide-react";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const Login = () => {
   const { login, googleLogin, phoneLogin } = useAuth();
@@ -23,13 +25,16 @@ const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [phonePassword, setPhonePassword] = useState("");
   const [phoneLoading, setPhoneLoading] = useState(false);
-  
+
   // Google login state
   const [googleLoading, setGoogleLoading] = useState(false);
 
+  // Faux loading "after login"
+  const [postLoginLoading, setPostLoginLoading] = useState(false);
+
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
       toast({
         variant: "destructive",
@@ -43,7 +48,12 @@ const Login = () => {
       setEmailLoading(true);
       const user = await login(email, password);
       if (user) {
-        navigate("/dashboard");
+        // Afficher le faux loading avant redirection
+        setPostLoginLoading(true);
+        setTimeout(() => {
+          setPostLoginLoading(false);
+          navigate("/dashboard");
+        }, 2000); // 2 secondes de chargement
       }
     } catch (error) {
       console.error(error);
@@ -54,7 +64,7 @@ const Login = () => {
 
   const handlePhoneLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!phoneNumber || !phonePassword) {
       toast({
         variant: "destructive",
@@ -66,7 +76,6 @@ const Login = () => {
 
     try {
       setPhoneLoading(true);
-      // For now, we're just showing a toast since phone login requires more implementation
       toast({
         title: "Phone authentication",
         description: "Phone authentication requires additional setup with Firebase.",
@@ -88,7 +97,12 @@ const Login = () => {
       setGoogleLoading(true);
       const user = await googleLogin();
       if (user) {
-        navigate("/dashboard");
+        // Faux chargement après connexion Google
+        setPostLoginLoading(true);
+        setTimeout(() => {
+          setPostLoginLoading(false);
+          navigate("/dashboard");
+        }, 2000);
       }
     } catch (error) {
       console.error(error);
@@ -97,11 +111,16 @@ const Login = () => {
     }
   };
 
+  // Si le faux chargement est actif, on affiche le spinner sur toute la page !
+  if (postLoginLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/30 via-purple-500/30 to-pink-500/30 backdrop-blur-3xl" />
-      
-      <div className="w-full max-w-md relative z-10">        
+
+      <div className="w-full max-w-md relative z-10">
         <Card className="w-full shadow-xl bg-white/80 backdrop-blur-sm">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl text-center">Se connecter</CardTitle>
@@ -109,14 +128,14 @@ const Login = () => {
               Choisissez votre méthode de connexion
             </CardDescription>
           </CardHeader>
-          
+
           <CardContent>
             <Tabs defaultValue="email" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-6">
                 <TabsTrigger value="email">Email</TabsTrigger>
                 <TabsTrigger value="phone">Phone</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="email">
                 <form onSubmit={handleEmailLogin} className="space-y-4">
                   <div className="space-y-2">
@@ -133,7 +152,7 @@ const Login = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <Label htmlFor="password">Password</Label>
@@ -153,10 +172,10 @@ const Login = () => {
                       />
                     </div>
                   </div>
-                  
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-indigo-600 hover:bg-indigo-700" 
+
+                  <Button
+                    type="submit"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700"
                     disabled={emailLoading}
                   >
                     {emailLoading ? (
@@ -172,7 +191,7 @@ const Login = () => {
                   </Button>
                 </form>
               </TabsContent>
-              
+
               <TabsContent value="phone">
                 <form onSubmit={handlePhoneLogin} className="space-y-4">
                   <div className="space-y-2">
@@ -189,7 +208,7 @@ const Login = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="phonePassword">Mot de passe</Label>
                     <div className="relative">
@@ -204,10 +223,10 @@ const Login = () => {
                       />
                     </div>
                   </div>
-                  
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-indigo-600 hover:bg-indigo-700" 
+
+                  <Button
+                    type="submit"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700"
                     disabled={phoneLoading}
                   >
                     {phoneLoading ? (
@@ -224,7 +243,7 @@ const Login = () => {
                 </form>
               </TabsContent>
             </Tabs>
-            
+
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300"></div>
@@ -233,10 +252,10 @@ const Login = () => {
                 <span className="px-2 bg-white text-gray-500">Ou continuez avec</span>
               </div>
             </div>
-            
-            <Button 
-              type="button" 
-              variant="outline" 
+
+            <Button
+              type="button"
+              variant="outline"
               className="w-full border-gray-300 hover:bg-gray-50"
               onClick={handleGoogleLogin}
               disabled={googleLoading}
@@ -259,7 +278,7 @@ const Login = () => {
               )}
             </Button>
           </CardContent>
-          
+
           <CardFooter className="flex flex-col space-y-4">
             <div className="text-center text-sm">
               Vous n'avez pas de compte?{" "}
@@ -269,7 +288,7 @@ const Login = () => {
             </div>
           </CardFooter>
         </Card>
-        
+
         <div id="recaptcha-container"></div>
       </div>
     </div>
@@ -277,3 +296,4 @@ const Login = () => {
 };
 
 export default Login;
+
