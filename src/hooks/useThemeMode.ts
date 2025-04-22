@@ -1,9 +1,11 @@
 
-// Correction : s’assurer qu’on n’active le mode dark QUE quand il est choisi ou “system” en mode sombre.
-// Ne pas "forcer" le dark lors d’un simple accès aux paramètres.
+// Correction : cette version permet de ne changer le mode sombre que par la fonction setThemeMode, JAMIS via system.
+// On ne propose plus le mode "system".
+// Le thème n'est changé que via le switch de la sidebar.
+
 import { useEffect, useState } from "react";
 
-export type ThemeMode = "light" | "dark" | "system";
+export type ThemeMode = "light" | "dark";
 
 const THEME_KEY = "theme_mode";
 
@@ -11,7 +13,7 @@ export function useThemeMode() {
   const [theme, setTheme] = useState<ThemeMode>(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem(THEME_KEY) as ThemeMode | null;
-      if (stored) return stored;
+      if (stored === "dark" || stored === "light") return stored;
       localStorage.setItem(THEME_KEY, "light");
       return "light";
     }
@@ -20,31 +22,11 @@ export function useThemeMode() {
 
   useEffect(() => {
     const root = window.document.documentElement;
-
-    function applyTheme(mode: ThemeMode) {
-      if (mode === "dark") {
-        root.classList.add("dark");
-      } else if (mode === "light") {
-        root.classList.remove("dark");
-      } else if (mode === "system") {
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-          root.classList.add("dark");
-        } else {
-          root.classList.remove("dark");
-        }
-      }
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
     }
-
-    applyTheme(theme);
-
-    if (theme === "system") {
-      const mq = window.matchMedia("(prefers-color-scheme: dark)");
-      const systemListener = () => applyTheme("system");
-      mq.addEventListener("change", systemListener);
-      return () => mq.removeEventListener("change", systemListener);
-    }
-
-    return;
   }, [theme]);
 
   const setThemeMode = (mode: ThemeMode) => {
@@ -53,16 +35,11 @@ export function useThemeMode() {
     const root = window.document.documentElement;
     if (mode === "dark") {
       root.classList.add("dark");
-    } else if (mode === "light") {
+    } else {
       root.classList.remove("dark");
-    } else if (mode === "system") {
-      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        root.classList.add("dark");
-      } else {
-        root.classList.remove("dark");
-      }
     }
   };
 
   return { theme, setThemeMode };
 }
+

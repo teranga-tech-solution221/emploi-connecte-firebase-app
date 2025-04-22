@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -85,6 +84,7 @@
   }
 }
 
+/* Harmonise TOUS LES FONDS et textes selon le thème. */
 @layer base {
   * {
     @apply border-border;
@@ -93,56 +93,76 @@
   body {
     @apply bg-background text-foreground transition-colors duration-300;
   }
-  
-  .dark body {
-    background-color: hsl(240, 10%, 3.9%); /* Noir uniforme */
-    background-image: none; /* Pas de gradient */
+
+  #root {
+    @apply bg-background text-foreground min-h-screen;
   }
   
+  .dark body, .dark #root {
+    background-color: hsl(240, 10%, 3.9%) !important;
+    color: hsl(210, 40%, 98%) !important;
+    background-image: none !important;
+  }
+
   header, 
   .bg-white, 
   [class*='bg-gray-'],
   [class*='bg-slate-'] {
     @apply dark:bg-background dark:text-foreground;
   }
-  
+
   input, 
   select, 
   textarea {
     @apply dark:bg-secondary dark:text-foreground;
   }
-  
-  /* Amélioration du contraste pour les pages d'authentification en mode sombre */
+
+  .card,
   .dark .card,
-  .dark [class*='bg-white'] {
-    @apply bg-slate-900 backdrop-blur-sm border-white/5 text-white;
+  .dark [class*='bg-white'], 
+  .dark [class*='bg-gray-'],
+  .dark [class*='bg-slate-'] {
+    @apply bg-card text-card-foreground dark:bg-slate-900 dark:border-white/5 dark:text-white;
   }
-  
+
   .dark .relative span.px-2.bg-white.text-gray-500 {
     @apply bg-slate-900 text-gray-200;
   }
-  
+
   .dark .text-gray-500,
   .dark .text-gray-600,
   .dark .text-slate-600,
   .dark .text-slate-700 {
     @apply text-gray-200;
   }
-  
+
   .dark .text-indigo-600 {
     @apply text-indigo-400;
   }
-  
+
   .dark label {
     @apply text-gray-200;
   }
 
-  /* Amélioration spécifique pour les champs de formulaire en mode sombre */
   .dark input, 
   .dark select, 
   .dark textarea {
     @apply bg-slate-800 border-slate-700 text-white;
   }
+}
+
+/* Tous les backgrounds par défaut pour TOUTES les pages */
+.page-bg,
+.bg-gradient-to-br, /* override si pages utilisent cette classe pour les fonds */
+.bg-blue-100,
+.bg-indigo-50 {
+  @apply bg-background !important;
+}
+
+.text-gray-800,
+.text-gray-600,
+.text-blue-800 {
+  @apply text-foreground !important;
 }
 
 @layer utilities {

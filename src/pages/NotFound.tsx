@@ -1,3 +1,4 @@
+
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -14,13 +15,13 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-background text-foreground p-4">
       <div className="text-center">
-        <div className="inline-block p-6 bg-white rounded-full shadow-lg mb-6">
-          <div className="text-7xl font-bold text-indigo-600">404</div>
+        <div className="inline-block p-6 bg-card rounded-full shadow-lg mb-6">
+          <div className="text-7xl font-bold text-primary">404</div>
         </div>
-        <h1 className="text-3xl font-bold text-gray-800 mb-3">Page Not Found</h1>
-        <p className="text-xl text-gray-600 mb-8">
+        <h1 className="text-3xl font-bold mb-3">Page Not Found</h1>
+        <p className="text-xl mb-8">
           Oops! The page you're looking for doesn't exist.
         </p>
         <Link to="/auth/login">

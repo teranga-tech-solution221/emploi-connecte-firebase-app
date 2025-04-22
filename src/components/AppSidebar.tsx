@@ -27,6 +27,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useAuth } from "@/contexts/AuthContext"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
+import { useThemeMode } from "@/hooks/useThemeMode"
+import { Sun, Moon } from "lucide-react"
+import React from "react"
 
 const menuItems = [
   { title: "Tableau de bord", icon: Home, path: "/dashboard" },
@@ -42,6 +45,8 @@ export function AppSidebar() {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
 
+  const { theme, setThemeMode } = useThemeMode();
+
   const getInitials = (name: string | null | undefined) => {
     if (!name) return "U";
     return name.charAt(0).toUpperCase();
@@ -51,6 +56,9 @@ export function AppSidebar() {
     await logout();
     navigate("/auth/login");
   };
+
+  // Optionnel : switch simple light/dark, jamais "system"
+  const isDark = theme === "dark";
 
   return (
     <Sidebar className="border-r border-border">
@@ -62,6 +70,19 @@ export function AppSidebar() {
             </div>
             <span className="font-semibold text-xl">FABUS</span>
           </div>
+          {/* SWITCH LIGHT/DARK */}
+          <button
+            aria-label={isDark ? "Activer le mode clair" : "Activer le mode sombre"}
+            className="ml-4 flex items-center justify-center w-9 h-9 rounded-full hover:bg-accent transition-colors"
+            onClick={() => setThemeMode(isDark ? "light" : "dark")}
+            type="button"
+          >
+            {isDark ? (
+              <Sun size={22} className="text-yellow-400" />
+            ) : (
+              <Moon size={20} className="text-gray-700" />
+            )}
+          </button>
         </div>
         <div className="px-3 pb-2">
           <SidebarInput placeholder="Rechercher..." />
