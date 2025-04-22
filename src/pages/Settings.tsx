@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -12,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useThemeMode, ThemeMode } from "@/hooks/useThemeMode";
-import { Moon, Sun, Monitor } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 
 const Settings = () => {
   const { currentUser } = useAuth();
@@ -142,14 +143,14 @@ const Settings = () => {
                         <div className="flex items-center justify-between">
                           <div>
                             <Label className="block">Nouveaux messages</Label>
-                            <p className="text-sm text-muted-foreground">Recevoir une notification lors d’un nouveau message</p>
+                            <p className="text-sm text-muted-foreground">Recevoir une notification lors d'un nouveau message</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
                         
                         <div className="flex items-center justify-between">
                           <div>
-                            <Label className="block">Mises à jour d’application</Label>
+                            <Label className="block">Mises à jour d'application</Label>
                             <p className="text-sm text-muted-foreground">Notif sur les changements sur vos candidatures</p>
                           </div>
                           <Switch defaultChecked />
@@ -204,7 +205,7 @@ const Settings = () => {
                       
                       <div className="flex items-center justify-between">
                         <div>
-                          <Label className="block">Statut d’activité</Label>
+                          <Label className="block">Statut d'activité</Label>
                           <p className="text-sm text-muted-foreground">Montrer quand vous êtes en ligne</p>
                         </div>
                         <Switch defaultChecked />
@@ -213,7 +214,7 @@ const Settings = () => {
                       <div className="flex items-center justify-between">
                         <div>
                           <Label className="block">Collecte de données</Label>
-                          <p className="text-sm text-muted-foreground">Autoriser la collecte de données pour l’amélioration de l’expérience</p>
+                          <p className="text-sm text-muted-foreground">Autoriser la collecte de données pour l'amélioration de l'expérience</p>
                         </div>
                         <Switch defaultChecked />
                       </div>
@@ -234,7 +235,7 @@ const Settings = () => {
                   <CardContent className="space-y-6">
                     <div className="space-y-4">
                       <h3 className="font-medium">Thème</h3>
-                      <div className="grid grid-cols-3 gap-4">
+                      <div className="grid grid-cols-2 gap-4">
                         <Button
                           variant={theme === "light" ? "default" : "outline"}
                           className="border-primary aspect-[3/2] flex flex-col items-center justify-center gap-2 h-auto"
@@ -250,14 +251,6 @@ const Settings = () => {
                         >
                           <Moon className="h-5 w-5" />
                           Sombre
-                        </Button>
-                        <Button
-                          variant={theme === "system" ? "default" : "outline"}
-                          className="aspect-[3/2] flex flex-col items-center justify-center gap-2 h-auto"
-                          onClick={() => setThemeMode("system")}
-                        >
-                          <Monitor className="h-5 w-5" />
-                          Système
                         </Button>
                       </div>
                     </div>
