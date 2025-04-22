@@ -49,19 +49,19 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100 dark:from-indigo-950 dark:to-blue-950 p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-indigo-600">Emploi Connecté</h1>
-          <p className="text-slate-600 mt-2">Reset your password</p>
+          <h1 className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">Emploi Connecté</h1>
+          <p className="text-slate-600 dark:text-slate-300 mt-2">Reset your password</p>
         </div>
         
-        <Card className="w-full shadow-xl">
+        <Card className="w-full shadow-xl dark:bg-slate-800/90">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">
+            <CardTitle className="text-2xl text-center dark:text-white">
               {emailSent ? "Email Sent" : "Forgot Password"}
             </CardTitle>
-            <CardDescription className="text-center">
+            <CardDescription className="text-center dark:text-gray-300">
               {emailSent 
                 ? "Check your email for a password reset link" 
                 : "Enter your email address to reset your password"}

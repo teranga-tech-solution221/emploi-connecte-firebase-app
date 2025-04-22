@@ -24,10 +24,10 @@ const features = [
 export default function Index() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#1a1f2c] via-[#222] to-[#2b2250] relative overflow-x-hidden pb-16">
-      {/* Background photo glass effect */}
+      {/* Background photo glass effect - Image plus adaptée au thème de l'application */}
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=1400&q=80"
+          src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1400&q=80"
           alt=""
           className="w-full h-full object-cover opacity-20"
           draggable={false}

@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -93,13 +94,13 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/30 via-purple-500/30 to-pink-500/30 backdrop-blur-3xl" />
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/30 via-purple-500/30 to-pink-500/30 dark:from-indigo-900/50 dark:via-purple-900/50 dark:to-pink-900/50 backdrop-blur-3xl" />
       
       <div className="w-full max-w-md relative z-10">
-        <Card className="w-full shadow-xl bg-white/80 backdrop-blur-sm">
+        <Card className="w-full shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">Créer un compte</CardTitle>
-            <CardDescription className="text-center">
+            <CardTitle className="text-2xl text-center dark:text-white">Créer un compte</CardTitle>
+            <CardDescription className="text-center dark:text-gray-300">
               Entrez vos informations pour créer votre compte
             </CardDescription>
           </CardHeader>

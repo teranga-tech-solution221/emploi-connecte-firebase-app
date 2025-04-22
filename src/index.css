@@ -112,6 +112,31 @@
   textarea {
     @apply dark:bg-secondary dark:text-foreground;
   }
+  
+  /* Amélioration du contraste pour les pages d'authentification en mode sombre */
+  .dark .card,
+  .dark [class*='bg-white'] {
+    @apply bg-slate-800/90 backdrop-blur-sm border-white/5 text-white;
+  }
+  
+  .dark .relative span.px-2.bg-white.text-gray-500 {
+    @apply bg-slate-800 text-gray-300;
+  }
+  
+  .dark .text-gray-500,
+  .dark .text-gray-600,
+  .dark .text-slate-600,
+  .dark .text-slate-700 {
+    @apply text-gray-300;
+  }
+  
+  .dark .text-indigo-600 {
+    @apply text-indigo-400;
+  }
+  
+  .dark label {
+    @apply text-gray-200;
+  }
 }
 
 @layer utilities {
@@ -129,5 +154,10 @@
   
   .dark-card {
     @apply dark:bg-secondary/80 dark:backdrop-blur-md dark:border-white/5;
+  }
+  
+  /* Amélioration du contraste pour les éléments de carte en mode sombre */
+  .auth-card-dark {
+    @apply bg-slate-800/90 text-white border-white/5;
   }
 }

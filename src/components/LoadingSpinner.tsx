@@ -5,10 +5,10 @@ const LoadingSpinner = () => {
   const [visible, setVisible] = useState(true);
   
   useEffect(() => {
-    // Affiche le spinner pendant 2 secondes
+    // Affiche le spinner pendant 4 secondes comme demandé
     const timer = setTimeout(() => {
       setVisible(false);
-    }, 2000);
+    }, 4000);
     
     return () => clearTimeout(timer);
   }, []);
