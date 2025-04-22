@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { Upload } from "lucide-react";
 
 const Profile = () => {
   const { currentUser } = useAuth();
@@ -16,24 +17,47 @@ const Profile = () => {
   const [displayName, setDisplayName] = useState(currentUser?.displayName || "");
   const [isLoading, setIsLoading] = useState(false);
 
+  // Ajout d'un état pour le CV
+  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [cvLoading, setCvLoading] = useState(false);
+
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
     try {
-      // This is a simplified version - in a real app, you would update the profile
-      // through Firebase or your backend
       setIsLoading(false);
       toast({
-        title: "Profile Updated",
-        description: "Your profile has been successfully updated.",
+        title: "Profil mis à jour",
+        description: "Votre profil a bien été mis à jour.",
       });
     } catch (error) {
       setIsLoading(false);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to update profile. Please try again.",
+        title: "Erreur",
+        description: "Échec de la mise à jour du profil. Veuillez réessayer.",
+      });
+    }
+  };
+
+  // Gère le téléchargement simulé de CV
+  const handleCvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type === "application/pdf") {
+      setCvLoading(true);
+      setTimeout(() => {
+        setCvFile(file);
+        setCvLoading(false);
+        toast({
+          title: "CV téléchargé",
+          description: "Votre CV a été ajouté avec succès.",
+        });
+      }, 1200);
+    } else if (file) {
+      toast({
+        variant: "destructive",
+        title: "Format non supporté",
+        description: "Veuillez sélectionner un fichier PDF.",
       });
     }
   };
@@ -53,7 +77,7 @@ const Profile = () => {
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
               <div className="flex items-center gap-4">
                 <SidebarTrigger />
-                <h1 className="text-2xl font-bold text-gray-900">Profile</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Profil</h1>
               </div>
             </div>
           </header>
@@ -64,16 +88,57 @@ const Profile = () => {
               <div className="md:col-span-1">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Profile Picture</CardTitle>
+                    <CardTitle>Photo de profil</CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-col items-center">
                     <Avatar className="h-32 w-32">
-                      <AvatarImage src={currentUser?.photoURL || ""} alt="Profile" />
-                      <AvatarFallback className="text-4xl">{getInitials(currentUser?.displayName)}</AvatarFallback>
+                      <AvatarImage src={currentUser?.photoURL || ""} alt="Profil" />
+                      <AvatarFallback className="text-4xl">
+                        {getInitials(currentUser?.displayName)}
+                      </AvatarFallback>
                     </Avatar>
-                    <Button variant="outline" className="mt-4">
-                      Upload New Picture
+                    <Button variant="outline" className="mt-4" disabled>
+                      Changer la photo
                     </Button>
+                  </CardContent>
+                </Card>
+
+                {/* Bloc CV */}
+                <Card className="mt-6">
+                  <CardHeader>
+                    <CardTitle>Ajouter votre CV</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <form>
+                      <Label htmlFor="cv-upload" className="block mb-2">
+                        Téléverser un fichier PDF
+                      </Label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          id="cv-upload"
+                          type="file"
+                          accept=".pdf"
+                          className="hidden"
+                          onChange={handleCvChange}
+                        />
+                        <label htmlFor="cv-upload">
+                          <Button
+                            variant="outline"
+                            type="button"
+                            className="flex items-center gap-2"
+                            disabled={cvLoading}
+                          >
+                            <Upload className="w-4 h-4" />
+                            {cvLoading ? "Chargement..." : "Ajouter un CV"}
+                          </Button>
+                        </label>
+                        {cvFile && (
+                          <span className="text-green-600 text-sm">
+                            {cvFile.name}
+                          </span>
+                        )}
+                      </div>
+                    </form>
                   </CardContent>
                 </Card>
               </div>
@@ -81,14 +146,14 @@ const Profile = () => {
               <div className="md:col-span-2">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Personal Information</CardTitle>
-                    <CardDescription>Update your personal details</CardDescription>
+                    <CardTitle>Informations personnelles</CardTitle>
+                    <CardDescription>Mettez à jour vos informations personnelles</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <form onSubmit={handleUpdateProfile} className="space-y-4">
                       <div className="grid grid-cols-1 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="displayName">Display Name</Label>
+                          <Label htmlFor="displayName">Nom affiché</Label>
                           <Input 
                             id="displayName" 
                             value={displayName} 
@@ -107,7 +172,7 @@ const Profile = () => {
                       </div>
                       
                       <Button type="submit" disabled={isLoading}>
-                        {isLoading ? "Updating..." : "Update Profile"}
+                        {isLoading ? "Mise à jour..." : "Mettre à jour le profil"}
                       </Button>
                     </form>
                   </CardContent>
@@ -122,3 +187,4 @@ const Profile = () => {
 };
 
 export default Profile;
+

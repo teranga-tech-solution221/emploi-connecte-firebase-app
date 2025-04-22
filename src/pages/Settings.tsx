@@ -19,8 +19,8 @@ const Settings = () => {
 
   const handleSaveChanges = () => {
     toast({
-      title: "Settings saved",
-      description: "Your settings have been saved successfully."
+      title: "Paramètres enregistrés",
+      description: "Vos paramètres ont été sauvegardés avec succès."
     });
   };
 
@@ -39,7 +39,7 @@ const Settings = () => {
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
               <div className="flex items-center gap-4">
                 <SidebarTrigger />
-                <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Paramètres</h1>
               </div>
             </div>
           </header>
@@ -48,32 +48,32 @@ const Settings = () => {
           <main className="p-4 sm:p-6 lg:p-8">
             <Tabs defaultValue="account">
               <TabsList className="mb-6">
-                <TabsTrigger value="account">Account</TabsTrigger>
+                <TabsTrigger value="account">Compte</TabsTrigger>
                 <TabsTrigger value="notifications">Notifications</TabsTrigger>
-                <TabsTrigger value="privacy">Privacy</TabsTrigger>
-                <TabsTrigger value="appearance">Appearance</TabsTrigger>
+                <TabsTrigger value="privacy">Confidentialité</TabsTrigger>
+                <TabsTrigger value="appearance">Apparence</TabsTrigger>
               </TabsList>
               
               <TabsContent value="account" className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Account Information</CardTitle>
-                    <CardDescription>Manage your account details and preferences</CardDescription>
+                    <CardTitle>Informations du compte</CardTitle>
+                    <CardDescription>Gérez les détails et préférences de votre compte</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div className="flex flex-col sm:flex-row gap-6">
                       <div className="flex flex-col items-center sm:items-start gap-2">
                         <Avatar className="h-24 w-24">
-                          <AvatarImage src={currentUser?.photoURL || ""} alt="Profile" />
+                          <AvatarImage src={currentUser?.photoURL || ""} alt="Profil" />
                           <AvatarFallback className="text-2xl">{getInitials(currentUser?.displayName)}</AvatarFallback>
                         </Avatar>
-                        <Button variant="outline" size="sm">Change Picture</Button>
+                        <Button variant="outline" size="sm">Changer la photo</Button>
                       </div>
                       
                       <div className="flex-1 space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div className="space-y-2">
-                            <Label htmlFor="displayName">Display Name</Label>
+                            <Label htmlFor="displayName">Nom affiché</Label>
                             <Input 
                               id="displayName" 
                               defaultValue={currentUser?.displayName || ""} 
@@ -95,7 +95,7 @@ const Settings = () => {
                           <Input 
                             id="bio" 
                             defaultValue="" 
-                            placeholder="Tell us a bit about yourself"
+                            placeholder="Parlez-nous un peu de vous"
                           />
                         </div>
                       </div>
@@ -104,24 +104,24 @@ const Settings = () => {
                     <Separator />
                     
                     <div className="space-y-4">
-                      <h3 className="font-medium">Password</h3>
+                      <h3 className="font-medium">Mot de passe</h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="currentPassword">Current Password</Label>
+                          <Label htmlFor="currentPassword">Mot de passe actuel</Label>
                           <Input id="currentPassword" type="password" />
                         </div>
                         
                         <div className="space-y-2">
-                          <Label htmlFor="newPassword">New Password</Label>
+                          <Label htmlFor="newPassword">Nouveau mot de passe</Label>
                           <Input id="newPassword" type="password" />
                         </div>
                       </div>
                       
-                      <Button variant="outline" size="sm">Change Password</Button>
+                      <Button variant="outline" size="sm">Changer le mot de passe</Button>
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button onClick={handleSaveChanges}>Save Changes</Button>
+                    <Button onClick={handleSaveChanges}>Enregistrer les modifications</Button>
                   </CardFooter>
                 </Card>
               </TabsContent>
@@ -129,34 +129,34 @@ const Settings = () => {
               <TabsContent value="notifications" className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Notification Preferences</CardTitle>
-                    <CardDescription>Choose how and when you receive notifications</CardDescription>
+                    <CardTitle>Préférences de notification</CardTitle>
+                    <CardDescription>Choisissez comment et quand recevoir des notifications</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div className="space-y-4">
-                      <h3 className="font-medium">Email Notifications</h3>
+                      <h3 className="font-medium">Notifications par e-mail</h3>
                       
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
                           <div>
-                            <Label className="block">New Messages</Label>
-                            <p className="text-sm text-muted-foreground">Get notified when you receive a new message</p>
+                            <Label className="block">Nouveaux messages</Label>
+                            <p className="text-sm text-muted-foreground">Recevoir une notification lors d’un nouveau message</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
                         
                         <div className="flex items-center justify-between">
                           <div>
-                            <Label className="block">Application Updates</Label>
-                            <p className="text-sm text-muted-foreground">Get notified when there's an update to your job applications</p>
+                            <Label className="block">Mises à jour d’application</Label>
+                            <p className="text-sm text-muted-foreground">Notif sur les changements sur vos candidatures</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
                         
                         <div className="flex items-center justify-between">
                           <div>
-                            <Label className="block">New Job Recommendations</Label>
-                            <p className="text-sm text-muted-foreground">Receive emails about new jobs that match your skills</p>
+                            <Label className="block">Nouvelles recommandations d'emploi</Label>
+                            <p className="text-sm text-muted-foreground">Recevoir des emails sur les nouveaux jobs correspondant à vos compétences</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
@@ -166,13 +166,12 @@ const Settings = () => {
                     <Separator />
                     
                     <div className="space-y-4">
-                      <h3 className="font-medium">Push Notifications</h3>
-                      
+                      <h3 className="font-medium">Notifications push</h3>
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
                           <div>
-                            <Label className="block">Enable Push Notifications</Label>
-                            <p className="text-sm text-muted-foreground">Allow browser notifications for important updates</p>
+                            <Label className="block">Activer les notifications push</Label>
+                            <p className="text-sm text-muted-foreground">Recevoir les notifications importantes dans votre navigateur</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
@@ -180,7 +179,7 @@ const Settings = () => {
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button onClick={handleSaveChanges}>Save Changes</Button>
+                    <Button onClick={handleSaveChanges}>Enregistrer les modifications</Button>
                   </CardFooter>
                 </Card>
               </TabsContent>
@@ -188,38 +187,38 @@ const Settings = () => {
               <TabsContent value="privacy" className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Privacy Settings</CardTitle>
-                    <CardDescription>Manage your privacy and security preferences</CardDescription>
+                    <CardTitle>Paramètres de confidentialité</CardTitle>
+                    <CardDescription>Gérez votre confidentialité et la sécurité</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <Label className="block">Profile Visibility</Label>
-                          <p className="text-sm text-muted-foreground">Make your profile visible to potential employers</p>
+                          <Label className="block">Visibilité du profil</Label>
+                          <p className="text-sm text-muted-foreground">Rendre visible votre profil aux recruteurs</p>
                         </div>
                         <Switch defaultChecked />
                       </div>
                       
                       <div className="flex items-center justify-between">
                         <div>
-                          <Label className="block">Activity Status</Label>
-                          <p className="text-sm text-muted-foreground">Show when you're active on the platform</p>
+                          <Label className="block">Statut d’activité</Label>
+                          <p className="text-sm text-muted-foreground">Montrer quand vous êtes en ligne</p>
                         </div>
                         <Switch defaultChecked />
                       </div>
                       
                       <div className="flex items-center justify-between">
                         <div>
-                          <Label className="block">Data Collection</Label>
-                          <p className="text-sm text-muted-foreground">Allow us to collect usage data to improve your experience</p>
+                          <Label className="block">Collecte de données</Label>
+                          <p className="text-sm text-muted-foreground">Autoriser la collecte de données pour l’amélioration de l’expérience</p>
                         </div>
                         <Switch defaultChecked />
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button onClick={handleSaveChanges}>Save Changes</Button>
+                    <Button onClick={handleSaveChanges}>Enregistrer les modifications</Button>
                   </CardFooter>
                 </Card>
               </TabsContent>
@@ -227,28 +226,28 @@ const Settings = () => {
               <TabsContent value="appearance" className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Appearance Settings</CardTitle>
-                    <CardDescription>Customize how JobTracker looks</CardDescription>
+                    <CardTitle>Paramètres d’apparence</CardTitle>
+                    <CardDescription>Personnalisez le look de JobTracker</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div className="space-y-4">
-                      <h3 className="font-medium">Theme</h3>
+                      <h3 className="font-medium">Thème</h3>
                       
                       <div className="grid grid-cols-3 gap-4">
                         <Button variant="outline" className="border-primary aspect-[3/2] flex items-center justify-center h-auto">
-                          Light
+                          Clair
                         </Button>
                         <Button variant="outline" className="aspect-[3/2] flex items-center justify-center h-auto">
-                          Dark
+                          Sombre
                         </Button>
                         <Button variant="outline" className="aspect-[3/2] flex items-center justify-center h-auto">
-                          System
+                          Système
                         </Button>
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button onClick={handleSaveChanges}>Save Changes</Button>
+                    <Button onClick={handleSaveChanges}>Enregistrer les modifications</Button>
                   </CardFooter>
                 </Card>
               </TabsContent>
@@ -261,3 +260,4 @@ const Settings = () => {
 };
 
 export default Settings;
+
