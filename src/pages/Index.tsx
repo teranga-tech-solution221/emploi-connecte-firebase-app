@@ -27,7 +27,7 @@ export default function Index() {
       {/* Background photo glass effect */}
       <div className="absolute inset-0 dark:opacity-30">
         <img
-          src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1400&q=80"
+          src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=1400&q=80"
           alt=""
           className="w-full h-full object-cover opacity-20 dark:opacity-10"
           draggable={false}
