@@ -58,7 +58,7 @@ export default function Index() {
             asChild
             size="lg"
             variant="outline"
-            className="border-2 border-foreground/60 text-foreground font-semibold bg-transparent/5 backdrop-blur-md shadow hover:bg-transparent/10 hover:scale-105 transition-all animate-scale-in"
+            className="border-2 border-foreground/60 text-foreground font-semibold bg-transparent/5 backdrop-blur-md shadow dark:border-white/20 dark:text-white hover:bg-transparent/10 hover:scale-105 transition-all animate-scale-in"
           >
             <Link to="/auth/register">
               Créer un compte
@@ -73,7 +73,7 @@ export default function Index() {
           {features.map((feat, i) => (
             <div
               key={i}
-              className="dark:glass-morphism dark:bg-black/30 dark:border-white/10 rounded-2xl border shadow-lg p-6 relative group hover:-translate-y-1.5 transition-all duration-300"
+              className="rounded-2xl border shadow-lg p-6 relative group hover:-translate-y-1.5 transition-all duration-300 dark:bg-black dark:border-white/10"
             >
               <span className="absolute -top-6 left-1/2 -translate-x-1/2 shadow-lg rounded-full dark:bg-white dark:text-black p-2 w-14 h-14 flex items-center justify-center animate-fade-in">
                 <feat.icon size={32} className="dark:text-black" strokeWidth={2.2} />

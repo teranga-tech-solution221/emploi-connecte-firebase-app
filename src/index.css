@@ -107,13 +107,20 @@
 
   /* Forcer TOUTES les barres d'en-tête et backgrounds à être noirs en mode sombre */
   .dark header, 
-  .dark nav,
+  .dark nav {
+    background-color: black !important;
+    color: white !important;
+    background-image: none !important;
+  }
+  
+  /* Gérer les classes de couleur directement sans @apply pour éviter les dépendances circulaires */
   .dark .bg-white, 
   .dark [class*='bg-gray-'],
   .dark [class*='bg-slate-'],
   .dark [class*='bg-blue-'],
   .dark [class*='bg-indigo-'] {
-    @apply bg-black text-white !important;
+    background-color: black !important;
+    color: white !important;
     background-image: none !important;
   }
 
@@ -121,18 +128,25 @@
   .dark input, 
   .dark select, 
   .dark textarea {
-    @apply bg-black border-white/20 text-white !important;
+    background-color: black !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
   }
 
   /* Style de carte cohérent */
-  .card,
+  .card {
+    @apply bg-card text-card-foreground;
+  }
+  
   .dark .card,
   .dark [class*='bg-white'], 
   .dark [class*='bg-gray-'],
   .dark [class*='bg-slate-'],
   .dark [class*='bg-blue-'],
   .dark [class*='bg-indigo-'] {
-    @apply bg-card text-card-foreground dark:bg-black dark:border-white/10 dark:text-white !important;
+    background-color: black !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
   }
 
   /* Correction pour tous les textes en mode sombre */
@@ -156,29 +170,36 @@
   .dark .text-indigo-700,
   .dark .text-indigo-800,
   .dark .text-indigo-900 {
-    @apply text-white !important;
+    color: white !important;
   }
 
   /* Boutons en mode sombre */
   .dark .bg-primary {
-    @apply bg-white text-black !important;
+    background-color: white !important;
+    color: black !important;
   }
 
   .dark .text-primary {
-    @apply text-white !important;
+    color: white !important;
   }
 
   .dark button:not([class*="bg-transparent"]):not([class*="bg-black"]) {
-    @apply bg-white text-black hover:bg-white/90 !important;
+    background-color: white !important;
+    color: black !important;
+  }
+  
+  .dark button:not([class*="bg-transparent"]):not([class*="bg-black"]):hover {
+    background-color: rgba(255, 255, 255, 0.9) !important;
   }
 
   .dark button[class*="bg-transparent"], 
   .dark button[class*="bg-black"] {
-    @apply border-white/20 text-white !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
   }
 
   .dark label {
-    @apply text-white !important;
+    color: white !important;
   }
 }
 
@@ -198,23 +219,41 @@
 
 @layer utilities {
   .glass-morphism {
-    @apply backdrop-blur-xl bg-white/5 border border-white/10 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.3)];
+    backdrop-filter: blur(12px);
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.3);
   }
   
   .neo-blur {
-    @apply backdrop-blur-2xl bg-white/40 dark:bg-black dark:border-white/5;
+    backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+  
+  .dark .neo-blur {
+    background-color: black;
+    border-color: rgba(255, 255, 255, 0.05);
   }
   
   .text-gradient {
-    @apply bg-gradient-to-br from-white via-white/90 to-white/70 bg-clip-text text-transparent;
+    background: linear-gradient(to bottom right, white, rgba(255, 255, 255, 0.7));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   
   .dark-card {
-    @apply dark:bg-black dark:backdrop-blur-md dark:border-white/5;
+    @apply dark:backdrop-blur-md dark:border-white/5;
+  }
+  
+  .dark .dark-card {
+    background-color: black;
   }
   
   /* Amélioration du contraste pour les éléments de carte en mode sombre */
   .auth-card-dark {
-    @apply bg-black text-white border-white/5;
+    background-color: black;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.05);
   }
 }
