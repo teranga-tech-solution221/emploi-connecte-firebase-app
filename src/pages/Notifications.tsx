@@ -1,3 +1,4 @@
+
 import React from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -59,7 +60,7 @@ const Notifications = () => {
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
-        <div className="flex-1">
+        <div className="flex-1 ml-[70px] lg:ml-64"> {/* Ajout de marge pour compenser la sidebar fixe */}
           {/* Header */}
           <header className="shadow-sm border-b bg-background">
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">

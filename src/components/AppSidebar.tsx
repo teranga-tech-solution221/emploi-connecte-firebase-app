@@ -57,29 +57,33 @@ export function AppSidebar() {
   const isDark = theme === "dark";
 
   return (
-    <Sidebar className="border-r border-border">
+    <Sidebar className="border-r border-border h-screen fixed top-0 left-0">
       <SidebarHeader className="pb-0">
         <div className="flex items-center px-4 py-3">
           <div className="flex-1 flex items-center space-x-2">
             <div className="bg-blue-500/10 p-1 rounded">
               <Home className="h-6 w-6 text-blue-500" />
             </div>
-            <span className={`text-sm font-bold ${isDark ? 'text-blue-50' : 'text-gray-900'}`}>
-              {expanded ? "Jokko Liguey" : "JL"}
-            </span>
-          </div>
-          <button
-            aria-label={isDark ? "Activer le mode clair" : "Activer le mode sombre"}
-            className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-accent transition-colors"
-            onClick={() => setThemeMode(isDark ? "light" : "dark")}
-            type="button"
-          >
-            {isDark ? (
-              <Sun size={22} className="text-yellow-400" />
-            ) : (
-              <Moon size={20} className="text-gray-700" />
+            {expanded && (
+              <span className={`text-sm font-bold ${isDark ? 'text-blue-50' : 'text-gray-900'}`}>
+                Jokko Liguey
+              </span>
             )}
-          </button>
+          </div>
+          {expanded && (
+            <button
+              aria-label={isDark ? "Activer le mode clair" : "Activer le mode sombre"}
+              className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-accent transition-colors"
+              onClick={() => setThemeMode(isDark ? "light" : "dark")}
+              type="button"
+            >
+              {isDark ? (
+                <Sun size={22} className="text-yellow-400" />
+              ) : (
+                <Moon size={20} className="text-gray-700" />
+              )}
+            </button>
+          )}
         </div>
         {expanded && (
           <div className="px-3 pb-2">
