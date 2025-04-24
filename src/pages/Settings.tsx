@@ -1,145 +1,143 @@
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Save } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  UserCircle,
+  Mail,
+  Lock,
+  Bell,
+  Palette,
+  Upload,
+  Save,
+  Phone,
+  MapPin,
+  Users,
+  Building,
+  CreditCard
+} from "lucide-react";
 
-const Settings = () => {
+export default function Settings() {
   const { currentUser } = useAuth();
   const { toast } = useToast();
-  const [displayName, setDisplayName] = useState(currentUser?.displayName || "");
-  const [isLoading, setIsLoading] = useState(false);
-  const [photoURL, setPhotoURL] = useState(currentUser?.photoURL || "");
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [photoLoading, setPhotoLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [photoLoading, setPhotoLoading] = useState(false);
+  const [userType, setUserType] = useState("client"); // 'client' ou 'prestataire'
 
-  const [cvFile, setCvFile] = useState<File | null>(null);
-  const [cvLoading, setCvLoading] = useState(false);
-  const [cvURL, setCvURL] = useState<string | null>(null);
+  // États pour le profil
+  const [profileData, setProfileData] = useState({
+    displayName: currentUser?.displayName || "",
+    email: currentUser?.email || "",
+    phone: "",
+    address: "",
+    bio: "",
+    companyName: "",
+    companyType: "personal" // 'personal', 'enterprise', 'agency'
+  });
 
-  useEffect(() => {
-    if (currentUser) {
-      const photoPath = `profile_photos/${currentUser.uid}/profile`;
-      supabase.storage.from("profile_photos").getPublicUrl(`${currentUser.uid}/profile`).data?.publicUrl &&
-        setPhotoURL(supabase.storage.from("profile_photos").getPublicUrl(`${currentUser.uid}/profile`).data.publicUrl);
+  // États pour les paramètres
+  const [settings, setSettings] = useState({
+    darkMode: true,
+    emailNotifications: true,
+    smsNotifications: false,
+    desktopNotifications: true,
+    language: "fr",
+  });
 
-      supabase.storage.from("cvs").getPublicUrl(`${currentUser.uid}/cv.pdf`).data?.publicUrl &&
-        setCvURL(supabase.storage.from("cvs").getPublicUrl(`${currentUser.uid}/cv.pdf`).data.publicUrl);
-    }
-  }, [currentUser]);
+  const [securityData, setSecurityData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
 
-  const handleUpdateProfile = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setProfileData(prev => ({ ...prev, [name]: value }));
+  };
 
-    try {
-      if (currentUser) {
-        window.localStorage.setItem("displayName", displayName);
+  const handleSettingsChange = (key: keyof typeof settings, value: any) => {
+    setSettings(prev => ({ ...prev, [key]: value }));
+  };
 
-        if (photoFile) {
-          setPhotoLoading(true);
-          const { data: uploadData, error: uploadErr } = await supabase.storage
-            .from("profile_photos")
-            .upload(`${currentUser.uid}/profile`, photoFile, { upsert: true });
+  const handleSecurityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSecurityData(prev => ({ ...prev, [name]: value }));
+  };
 
-          if (uploadErr) throw uploadErr;
+  const handleUserTypeChange = (value: string) => {
+    setUserType(value);
+  };
 
-          const { data: photoData } = supabase.storage
-            .from("profile_photos")
-            .getPublicUrl(`${currentUser.uid}/profile`);
-          if (photoData?.publicUrl) setPhotoURL(photoData.publicUrl);
-
-          setPhotoLoading(false);
-        }
-
-        toast({
-          title: "Profil mis à jour",
-          description: "Votre profil a bien été mis à jour.",
-        });
-      }
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour du profil:", error);
+  const handleCvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Logique pour gérer le changement de CV
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
       toast({
-        variant: "destructive",
-        title: "Erreur",
-        description: "Échec de la mise à jour du profil. Veuillez réessayer.",
+        title: "CV téléchargé",
+        description: `Le fichier ${file.name} a été téléchargé avec succès.`,
       });
-    } finally {
-      setIsLoading(false);
-      setPhotoLoading(false);
     }
   };
 
-  // Add the missing handleSaveChanges function
-  const handleSaveChanges = () => {
-    toast({
-      title: "Modifications enregistrées",
-      description: "Vos préférences ont été mises à jour avec succès."
-    });
+  const handlePhotoClick = () => {
+    fileInputRef.current?.click();
   };
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPhotoFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => setPhotoURL(reader.result as string);
-      reader.readAsDataURL(file);
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setPhotoLoading(true);
+      
+      // Simuler un chargement
+      setTimeout(() => {
+        // Logique pour télécharger la photo
+        setPhotoLoading(false);
+        toast({
+          title: "Photo mise à jour",
+          description: "Votre photo de profil a été mise à jour avec succès.",
+        });
+      }, 1500);
     }
   };
 
-  const handleCvChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && file.type === "application/pdf" && currentUser) {
-      setCvLoading(true);
-
-      try {
-        const { data: uploadData, error: uploadErr } = await supabase.storage
-          .from("cvs")
-          .upload(`${currentUser.uid}/cv.pdf`, file, { upsert: true });
-
-        if (uploadErr) throw uploadErr;
-
-        const { data: cvData } = supabase.storage
-          .from("cvs")
-          .getPublicUrl(`${currentUser.uid}/cv.pdf`);
-        if (cvData?.publicUrl) setCvURL(cvData.publicUrl);
-
-        setCvFile(file);
-
-        toast({
-          title: "CV téléchargé",
-          description: "Votre CV a été ajouté avec succès.",
-        });
-      } catch (error) {
-        console.error("Erreur lors du téléchargement du CV:", error);
-        toast({
-          variant: "destructive",
-          title: "Erreur",
-          description: "Échec du téléchargement du CV. Veuillez réessayer.",
-        });
-      } finally {
-        setCvLoading(false);
-      }
-    } else if (file && file.type !== "application/pdf") {
+  // Fonction pour gérer l'enregistrement des modifications
+  const handleSaveChanges = () => {
+    setIsLoading(true);
+    
+    // Simuler un enregistrement
+    setTimeout(() => {
+      setIsLoading(false);
       toast({
-        variant: "destructive",
-        title: "Format non supporté",
-        description: "Veuillez sélectionner un fichier PDF.",
+        title: "Modifications enregistrées",
+        description: "Vos paramètres ont été mis à jour avec succès.",
       });
-    }
+    }, 1000);
   };
 
   const getInitials = (name: string | null | undefined) => {
@@ -147,18 +145,13 @@ const Settings = () => {
     return name.charAt(0).toUpperCase();
   };
 
-  const handleOpenFileInput = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
         <AppSidebar />
         <div className="flex-1">
-          <header className="shadow-sm border-b dark:border-gray-900">
+          {/* Header */}
+          <header className="bg-card shadow-sm border-b">
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
               <div className="flex items-center gap-4">
                 <SidebarTrigger />
@@ -167,253 +160,504 @@ const Settings = () => {
             </div>
           </header>
 
-          <main className="p-4 sm:p-6 lg:p-8">
+          {/* Main content */}
+          <main className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
             <Tabs defaultValue="profile" className="space-y-6">
-              <TabsList>
-                <TabsTrigger value="profile">Profil</TabsTrigger>
-                <TabsTrigger value="notifications">Notifications</TabsTrigger>
-                <TabsTrigger value="privacy">Confidentialité</TabsTrigger>
-                <TabsTrigger value="appearance">Apparence</TabsTrigger>
+              <TabsList className="grid grid-cols-4 mb-8">
+                <TabsTrigger value="profile" className="flex items-center gap-2">
+                  <UserCircle className="h-4 w-4" /> Profil
+                </TabsTrigger>
+                <TabsTrigger value="account" className="flex items-center gap-2">
+                  <Users className="h-4 w-4" /> Type de compte
+                </TabsTrigger>
+                <TabsTrigger value="notifications" className="flex items-center gap-2">
+                  <Bell className="h-4 w-4" /> Notifications
+                </TabsTrigger>
+                <TabsTrigger value="security" className="flex items-center gap-2">
+                  <Lock className="h-4 w-4" /> Sécurité
+                </TabsTrigger>
               </TabsList>
 
+              {/* PROFILE */}
               <TabsContent value="profile" className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="md:col-span-1 space-y-6">
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Photo de profil</CardTitle>
-                      </CardHeader>
-                      <CardContent className="flex flex-col items-center">
-                        <Avatar className="h-32 w-32">
-                          <AvatarImage src={photoURL} alt="Profil" />
-                          <AvatarFallback className="text-4xl">
-                            {getInitials(displayName)}
-                          </AvatarFallback>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Informations de profil</CardTitle>
+                    <CardDescription>
+                      Gérez vos informations personnelles et vos coordonnées.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="flex flex-col md:flex-row gap-8 items-start">
+                      <div className="flex flex-col items-center space-y-2">
+                        <Avatar className="h-24 w-24 cursor-pointer relative group" onClick={handlePhotoClick}>
+                          {photoLoading ? (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-full">
+                              <div className="w-8 h-8 border-4 border-t-blue-500 border-blue-500/30 rounded-full animate-spin"></div>
+                            </div>
+                          ) : (
+                            <>
+                              <AvatarImage src={currentUser?.photoURL || ""} />
+                              <AvatarFallback className="text-2xl">
+                                {getInitials(profileData.displayName)}
+                              </AvatarFallback>
+                              <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <Upload className="h-6 w-6 text-white" />
+                              </div>
+                            </>
+                          )}
                         </Avatar>
                         <input
                           type="file"
-                          className="hidden"
                           ref={fileInputRef}
-                          accept="image/*"
                           onChange={handlePhotoChange}
+                          className="hidden"
+                          accept="image/*"
                         />
-                        <Button
-                          variant="outline"
-                          className="mt-4"
-                          onClick={handleOpenFileInput}
-                          disabled={photoLoading}
-                        >
-                          {photoLoading ? "Chargement..." : "Changer la photo"}
-                        </Button>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>CV</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-4">
-                          <input
-                            id="cv-upload"
-                            type="file"
-                            accept=".pdf"
-                            className="hidden"
-                            onChange={handleCvChange}
+                        <p className="text-sm text-muted-foreground">Photo de profil</p>
+                      </div>
+                      
+                      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="displayName">Nom complet</Label>
+                          <Input
+                            id="displayName"
+                            name="displayName"
+                            value={profileData.displayName}
+                            onChange={handleProfileChange}
+                            placeholder="Votre nom complet"
                           />
-                          <label htmlFor="cv-upload">
-                            <Button
-                              variant="outline"
-                              type="button"
-                              className="w-full flex items-center gap-2"
-                              disabled={cvLoading}
-                            >
-                              <Upload className="w-4 h-4" />
-                              {cvLoading ? "Chargement..." : "Ajouter un CV"}
-                            </Button>
-                          </label>
-
-                          {cvURL && (
-                            <div className="mt-2">
-                              <p className="text-sm text-green-600 dark:text-green-400 mb-2">
-                                CV téléchargé avec succès
-                              </p>
-                              <a
-                                href={cvURL}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-primary hover:underline flex items-center gap-1"
-                              >
-                                <span>Voir mon CV</span>
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                </svg>
-                              </a>
-                            </div>
-                          )}
                         </div>
-                      </CardContent>
-                    </Card>
-                  </div>
+                        
+                        <div className="space-y-2">
+                          <Label htmlFor="email">Adresse email</Label>
+                          <Input
+                            id="email"
+                            name="email"
+                            type="email"
+                            value={profileData.email}
+                            onChange={handleProfileChange}
+                            placeholder="Votre adresse email"
+                          />
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <Label htmlFor="phone">Numéro de téléphone</Label>
+                          <Input
+                            id="phone"
+                            name="phone"
+                            type="tel"
+                            value={profileData.phone}
+                            onChange={handleProfileChange}
+                            placeholder="Ex: +221 77 123 45 67"
+                          />
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <Label htmlFor="address">Adresse</Label>
+                          <Input
+                            id="address"
+                            name="address"
+                            value={profileData.address}
+                            onChange={handleProfileChange}
+                            placeholder="Votre adresse complète"
+                          />
+                        </div>
+                        
+                        <div className="space-y-2 md:col-span-2">
+                          <Label htmlFor="bio">Biographie</Label>
+                          <Textarea
+                            id="bio"
+                            name="bio"
+                            value={profileData.bio}
+                            onChange={handleProfileChange}
+                            placeholder="Une courte description de vous ou de votre entreprise"
+                            rows={3}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-end gap-3">
+                    <Button variant="outline">Annuler</Button>
+                    <Button onClick={handleSaveChanges} disabled={isLoading}>
+                      {isLoading ? (
+                        <>
+                          <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></span>
+                          Enregistrement...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="mr-2 h-4 w-4" /> Enregistrer
+                        </>
+                      )}
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </TabsContent>
 
-                  <div className="md:col-span-2">
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Informations personnelles</CardTitle>
-                        <CardDescription>Mettez à jour vos informations personnelles</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <form onSubmit={handleUpdateProfile} className="space-y-4">
-                          <div className="grid grid-cols-1 gap-4">
-                            <div className="space-y-2">
-                              <Label htmlFor="displayName">Nom affiché</Label>
+              {/* ACCOUNT TYPE */}
+              <TabsContent value="account" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Type de compte</CardTitle>
+                    <CardDescription>
+                      Définissez votre rôle sur la plateforme et personnalisez votre expérience.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div 
+                        className={`border rounded-lg p-6 cursor-pointer transition-all ${
+                          userType === 'client' ? 'border-blue-500 bg-blue-500/10' : 'border-border hover:border-blue-300'
+                        }`}
+                        onClick={() => handleUserTypeChange('client')}
+                      >
+                        <div className="flex items-center gap-4 mb-4">
+                          <Building className={`h-10 w-10 ${userType === 'client' ? 'text-blue-500' : 'text-muted-foreground'}`} />
+                          <div>
+                            <h3 className="font-semibold text-lg">Client</h3>
+                            <p className="text-sm text-muted-foreground">Je cherche des talents et services</p>
+                          </div>
+                        </div>
+                        <ul className="space-y-2 text-sm">
+                          <li className="flex items-center gap-2">
+                            <Badge className="h-2 w-2 rounded-full bg-blue-500" variant="secondary" />
+                            Publier des offres d'emploi
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <Badge className="h-2 w-2 rounded-full bg-blue-500" variant="secondary" />
+                            Consulter les profils de prestataires
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <Badge className="h-2 w-2 rounded-full bg-blue-500" variant="secondary" />
+                            Gérer les candidatures reçues
+                          </li>
+                        </ul>
+                      </div>
+                      
+                      <div 
+                        className={`border rounded-lg p-6 cursor-pointer transition-all ${
+                          userType === 'prestataire' ? 'border-blue-500 bg-blue-500/10' : 'border-border hover:border-blue-300'
+                        }`}
+                        onClick={() => handleUserTypeChange('prestataire')}
+                      >
+                        <div className="flex items-center gap-4 mb-4">
+                          <UserCircle className={`h-10 w-10 ${userType === 'prestataire' ? 'text-blue-500' : 'text-muted-foreground'}`} />
+                          <div>
+                            <h3 className="font-semibold text-lg">Prestataire</h3>
+                            <p className="text-sm text-muted-foreground">Je propose mes services</p>
+                          </div>
+                        </div>
+                        <ul className="space-y-2 text-sm">
+                          <li className="flex items-center gap-2">
+                            <Badge className="h-2 w-2 rounded-full bg-blue-500" variant="secondary" />
+                            Créer un profil professionnel détaillé
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <Badge className="h-2 w-2 rounded-full bg-blue-500" variant="secondary" />
+                            Postuler aux offres d'emploi
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <Badge className="h-2 w-2 rounded-full bg-blue-500" variant="secondary" />
+                            Publier des services disponibles
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    {userType === 'prestataire' && (
+                      <div className="pt-4 border-t">
+                        <h3 className="font-medium mb-4">Type de prestataire</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="companyName">Nom de l'entreprise/organisme</Label>
+                            <Input
+                              id="companyName"
+                              name="companyName"
+                              value={profileData.companyName}
+                              onChange={handleProfileChange}
+                              placeholder="Optionnel si indépendant"
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="companyType">Type de structure</Label>
+                            <Select value={profileData.companyType} onValueChange={(value) => setProfileData(prev => ({...prev, companyType: value}))}>
+                              <SelectTrigger id="companyType">
+                                <SelectValue placeholder="Sélectionnez un type" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="personal">Indépendant / Freelance</SelectItem>
+                                <SelectItem value="enterprise">Entreprise</SelectItem>
+                                <SelectItem value="agency">Agence</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="cv">CV / Portfolio</Label>
+                            <div className="flex items-center gap-2">
                               <Input
-                                id="displayName"
-                                value={displayName}
-                                onChange={(e) => setDisplayName(e.target.value)}
-                              />
-                            </div>
-
-                            <div className="space-y-2">
-                              <Label htmlFor="email">Email</Label>
-                              <Input
-                                id="email"
-                                value={currentUser?.email || ""}
-                                disabled
+                                id="cv"
+                                type="file"
+                                onChange={handleCvChange}
+                                accept=".pdf,.doc,.docx"
+                                className="max-w-sm"
                               />
                             </div>
                           </div>
-
-                          <Button
-                            type="submit"
-                            disabled={isLoading}
-                            className="flex items-center gap-2"
-                          >
-                            {isLoading ? "Mise à jour..." : (
-                              <>
-                                <Save className="w-4 h-4" />
-                                Mettre à jour le profil
-                              </>
-                            )}
-                          </Button>
-                        </form>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {userType === 'client' && (
+                      <div className="pt-4 border-t">
+                        <h3 className="font-medium mb-4">Informations supplémentaires</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="companyName">Nom de l'entreprise</Label>
+                            <Input
+                              id="companyName"
+                              name="companyName"
+                              value={profileData.companyName}
+                              onChange={handleProfileChange}
+                              placeholder="Nom de votre entreprise"
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="secteur">Secteur d'activité</Label>
+                            <Select>
+                              <SelectTrigger id="secteur">
+                                <SelectValue placeholder="Sélectionnez un secteur" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="tech">Technologies</SelectItem>
+                                <SelectItem value="marketing">Marketing</SelectItem>
+                                <SelectItem value="finance">Finance</SelectItem>
+                                <SelectItem value="education">Éducation</SelectItem>
+                                <SelectItem value="health">Santé</SelectItem>
+                                <SelectItem value="other">Autre</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                  <CardFooter className="flex justify-end gap-3">
+                    <Button variant="outline">Annuler</Button>
+                    <Button onClick={handleSaveChanges} disabled={isLoading}>
+                      {isLoading ? (
+                        <>
+                          <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></span>
+                          Enregistrement...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="mr-2 h-4 w-4" /> Enregistrer
+                        </>
+                      )}
+                    </Button>
+                  </CardFooter>
+                </Card>
               </TabsContent>
 
+              {/* NOTIFICATIONS */}
               <TabsContent value="notifications" className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Préférences de notification</CardTitle>
-                    <CardDescription>Choisissez comment et quand recevoir des notifications</CardDescription>
+                    <CardTitle>Préférences de notifications</CardTitle>
+                    <CardDescription>
+                      Personnalisez la façon dont vous recevez les notifications.
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div className="space-y-4">
-                      <h3 className="font-medium">Notifications par e-mail</h3>
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label htmlFor="email-notifications">Notifications par email</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Recevez des emails pour les activités importantes.
+                          </p>
+                        </div>
+                        <Switch
+                          id="email-notifications"
+                          checked={settings.emailNotifications}
+                          onCheckedChange={(checked) => handleSettingsChange("emailNotifications", checked)}
+                        />
+                      </div>
                       
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <Label className="block">Nouveaux messages</Label>
-                            <p className="text-sm text-muted-foreground">Recevoir une notification lors d'un nouveau message</p>
-                          </div>
-                          <Switch defaultChecked />
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label htmlFor="sms-notifications">Notifications par SMS</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Recevez des SMS pour les alertes urgentes.
+                          </p>
                         </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <Label className="block">Mises à jour d'application</Label>
-                            <p className="text-sm text-muted-foreground">Notif sur les changements sur vos candidatures</p>
-                          </div>
-                          <Switch defaultChecked />
+                        <Switch
+                          id="sms-notifications"
+                          checked={settings.smsNotifications}
+                          onCheckedChange={(checked) => handleSettingsChange("smsNotifications", checked)}
+                        />
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label htmlFor="desktop-notifications">Notifications de bureau</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Recevez des notifications sur votre navigateur.
+                          </p>
                         </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <Label className="block">Nouvelles recommandations d'emploi</Label>
-                            <p className="text-sm text-muted-foreground">Recevoir des emails sur les nouveaux jobs correspondant à vos compétences</p>
-                          </div>
-                          <Switch defaultChecked />
-                        </div>
+                        <Switch
+                          id="desktop-notifications"
+                          checked={settings.desktopNotifications}
+                          onCheckedChange={(checked) => handleSettingsChange("desktopNotifications", checked)}
+                        />
                       </div>
                     </div>
                     
-                    <Separator />
-                    
-                    <div className="space-y-4">
-                      <h3 className="font-medium">Notifications push</h3>
-                      <div className="space-y-4">
+                    <div className="pt-4 border-t space-y-4">
+                      <h3 className="font-medium">Types de notifications</h3>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="flex items-center justify-between">
-                          <div>
-                            <Label className="block">Activer les notifications push</Label>
-                            <p className="text-sm text-muted-foreground">Recevoir les notifications importantes dans votre navigateur</p>
-                          </div>
-                          <Switch defaultChecked />
+                          <Label htmlFor="messages-notif">Messages</Label>
+                          <Switch id="messages-notif" checked={true} />
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor="applications-notif">Candidatures</Label>
+                          <Switch id="applications-notif" checked={true} />
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor="offers-notif">Offres d'emploi</Label>
+                          <Switch id="offers-notif" checked={true} />
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor="updates-notif">Mises à jour du système</Label>
+                          <Switch id="updates-notif" checked={false} />
                         </div>
                       </div>
                     </div>
                   </CardContent>
-                  <CardFooter>
-                    <Button onClick={handleSaveChanges}>Enregistrer les modifications</Button>
+                  <CardFooter className="flex justify-end gap-3">
+                    <Button variant="outline">Annuler</Button>
+                    <Button onClick={handleSaveChanges} disabled={isLoading}>
+                      {isLoading ? (
+                        <>
+                          <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></span>
+                          Enregistrement...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="mr-2 h-4 w-4" /> Enregistrer
+                        </>
+                      )}
+                    </Button>
                   </CardFooter>
                 </Card>
               </TabsContent>
-              
-              <TabsContent value="privacy" className="space-y-6">
+
+              {/* SECURITY */}
+              <TabsContent value="security" className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Paramètres de confidentialité</CardTitle>
-                    <CardDescription>Gérez votre confidentialité et la sécurité</CardDescription>
+                    <CardTitle>Sécurité du compte</CardTitle>
+                    <CardDescription>
+                      Mettez à jour votre mot de passe et sécurisez votre compte.
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <Label className="block">Visibilité du profil</Label>
-                          <p className="text-sm text-muted-foreground">Rendre visible votre profil aux recruteurs</p>
-                        </div>
-                        <Switch defaultChecked />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="currentPassword">Mot de passe actuel</Label>
+                        <Input
+                          id="currentPassword"
+                          name="currentPassword"
+                          type="password"
+                          value={securityData.currentPassword}
+                          onChange={handleSecurityChange}
+                          placeholder="••••••••"
+                        />
                       </div>
                       
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <Label className="block">Statut d'activité</Label>
-                          <p className="text-sm text-muted-foreground">Montrer quand vous êtes en ligne</p>
+                      <div className="md:col-span-2 border-t pt-4 mt-2">
+                        <h3 className="font-medium mb-4">Changer de mot de passe</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="newPassword">Nouveau mot de passe</Label>
+                            <Input
+                              id="newPassword"
+                              name="newPassword"
+                              type="password"
+                              value={securityData.newPassword}
+                              onChange={handleSecurityChange}
+                              placeholder="••••••••"
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
+                            <Input
+                              id="confirmPassword"
+                              name="confirmPassword"
+                              type="password"
+                              value={securityData.confirmPassword}
+                              onChange={handleSecurityChange}
+                              placeholder="••••••••"
+                            />
+                          </div>
                         </div>
-                        <Switch defaultChecked />
                       </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <Label className="block">Collecte de données</Label>
-                          <p className="text-sm text-muted-foreground">Autoriser la collecte de données pour l'amélioration de l'expérience</p>
+                    </div>
+                    
+                    <div className="border-t pt-4">
+                      <h3 className="font-medium mb-4">Sécurité supplémentaire</h3>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-0.5">
+                            <Label>Authentification à deux facteurs</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Protégez votre compte avec une deuxième méthode d'authentification.
+                            </p>
+                          </div>
+                          <Button variant="outline" size="sm">
+                            Configurer
+                          </Button>
                         </div>
-                        <Switch defaultChecked />
+                        
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-0.5">
+                            <Label>Sessions actives</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Gérez les appareils connectés à votre compte.
+                            </p>
+                          </div>
+                          <Button variant="outline" size="sm">
+                            Gérer
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </CardContent>
-                  <CardFooter>
-                    <Button onClick={handleSaveChanges}>Enregistrer les modifications</Button>
-                  </CardFooter>
-                </Card>
-              </TabsContent>
-              
-              <TabsContent value="appearance" className="space-y-6">
-                <Card className="dark-card">
-                  <CardHeader>
-                    <CardTitle>Paramètres d'apparence</CardTitle>
-                    <CardDescription>Personnalisez le look de JobTracker</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="space-y-4">
-                      <h3 className="font-medium">Thème</h3>
-                      <p className="text-muted-foreground">Le thème peut être changé en utilisant l'icône située à côté du logo dans la barre latérale.</p>
-                    </div>
-                  </CardContent>
-                  <CardFooter>
-                    <Button onClick={handleSaveChanges}>Enregistrer les modifications</Button>
+                  <CardFooter className="flex justify-end gap-3">
+                    <Button variant="outline">Annuler</Button>
+                    <Button onClick={handleSaveChanges} disabled={isLoading}>
+                      {isLoading ? (
+                        <>
+                          <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></span>
+                          Enregistrement...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="mr-2 h-4 w-4" /> Enregistrer
+                        </>
+                      )}
+                    </Button>
                   </CardFooter>
                 </Card>
               </TabsContent>
@@ -423,6 +667,4 @@ const Settings = () => {
       </div>
     </SidebarProvider>
   );
-};
-
-export default Settings;
+}

@@ -63,10 +63,10 @@ export function AppSidebar() {
       <SidebarHeader className="pb-0">
         <div className="flex items-center px-4 py-3">
           <div className="flex-1 flex items-center gap-2">
-            <div className="bg-primary/10 p-1 rounded">
-              <Home className="h-6 w-6 text-primary" />
+            <div className="bg-blue-500/10 p-1 rounded">
+              <Home className="h-6 w-6 text-blue-500" />
             </div>
-            <span className="font-semibold text-xl">FABUS</span>
+            <span className="font-bold text-xl text-blue-50">Jokko Liguey</span>
           </div>
           {/* SWITCH LIGHT/DARK */}
           <button

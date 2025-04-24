@@ -1,89 +1,144 @@
 
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { LayoutDashboard, Rocket, Star, Bell } from "lucide-react";
-
-const features = [
-  {
-    icon: LayoutDashboard,
-    title: "Tableau intuitif",
-    desc: "Pilotez toutes vos candidatures sur une interface claire et rapide, sans vous perdre.",
-  },
-  {
-    icon: Rocket,
-    title: "Boost d'efficacité",
-    desc: "Des outils et des rappels pour accélérer votre recherche et saisir chaque opportunité.",
-  },
-  {
-    icon: Bell,
-    title: "Suivi intelligent",
-    desc: "Soyez notifié à chaque étape et ne ratez plus jamais une relance ou une réponse.",
-  },
-];
+import { useAuth } from "@/contexts/AuthContext";
+import { ArrowRight, FileText, Users, Bell, Settings } from "lucide-react";
 
 export default function Index() {
+  const { currentUser } = useAuth();
+
   return (
-    <div className="min-h-screen flex flex-col bg-background relative overflow-x-hidden pb-16">
-      {/* Background photo glass effect */}
-      <div className="absolute inset-0 dark:opacity-30">
-        <img
-          src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=1400&q=80"
-          alt=""
-          className="w-full h-full object-cover opacity-20 dark:opacity-10"
-          draggable={false}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/75 dark:from-black dark:to-black" aria-hidden="true" />
+    <div className="min-h-screen w-full flex flex-col bg-black relative overflow-hidden">
+      {/* Effet de grain */}
+      <div className="absolute inset-0 z-0 opacity-30">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          opacity: 0.1
+        }}></div>
       </div>
-
-      {/* Hero section */}
-      <section className="relative z-10 flex flex-col items-center justify-center grow pt-24 pb-8">
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground text-center drop-shadow-xl tracking-tight mb-6 animate-fade-in">
-          FABUS
-        </h1>
-        <p className="text-xl md:text-2xl text-foreground text-center max-w-2xl mx-auto mb-8 leading-relaxed animate-fade-in">
-          Le cockpit moderne pour candidater sans stress. Maîtrisez votre avenir pro avec efficacité, style et sérénité.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 mt-6 px-2">
-          <Button
-            asChild
-            size="lg"
-            className="dark:bg-white dark:text-black dark:hover:bg-white/90 font-semibold shadow-lg hover:scale-105 transform transition-all duration-200 animate-scale-in"
-          >
-            <Link to="/auth/login" className="flex items-center gap-2">
-              Commencer
-              <span><svg width="24" height="24" fill="none" stroke="currentColor"><path d="M9 18l6-6-6-6"/></svg></span>
-            </Link>
-          </Button>
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="border-2 border-foreground/60 text-foreground font-semibold bg-transparent/5 backdrop-blur-md shadow dark:border-white/20 dark:text-white hover:bg-transparent/10 hover:scale-105 transition-all animate-scale-in"
-          >
-            <Link to="/auth/register">
-              Créer un compte
-            </Link>
-          </Button>
+      
+      {/* Effet de lumière bleue */}
+      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full aspect-[2/1]">
+        <div className="absolute inset-0 bg-blue-600 rounded-full blur-[100px] opacity-20 animate-pulse"></div>
+      </div>
+      
+      {/* Contenu principal */}
+      <main className="container mx-auto flex flex-col items-center justify-center grow pt-20 pb-20 px-4 relative z-10">
+        <div className="flex flex-col items-center space-y-2 mb-8 animate-fade-in">
+          <h1 className="text-7xl font-bold text-white tracking-tight text-center mb-4 relative">
+            <span className="relative z-10">Jokko Liguey</span>
+            <span className="absolute -inset-x-10 inset-y-0 bg-blue-600/20 blur-xl rounded-full z-0"></span>
+          </h1>
+          <p className="text-xl md:text-2xl text-blue-200 text-center max-w-2xl mx-auto leading-relaxed opacity-80">
+            Connectez prestataires et clients dans un écosystème professionnel intuitif.
+          </p>
         </div>
-      </section>
-
-      {/* Features */}
-      <section className="relative z-10 flex flex-col items-center w-full px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl mt-10">
-          {features.map((feat, i) => (
+        
+        {/* Features display animé */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 w-full max-w-5xl mb-14 animate-scale-in">
+          {[
+            { icon: FileText, title: "Candidatures", desc: "Gérez vos opportunités professionnelles" },
+            { icon: Users, title: "Réseau", desc: "Connectez-vous aux meilleurs talents" },
+            { icon: Bell, title: "Alertes", desc: "Notifications en temps réel" },
+            { icon: Settings, title: "Personnalisation", desc: "Adaptez l'interface à vos besoins" }
+          ].map((feature, i) => (
             <div
               key={i}
-              className="rounded-2xl border shadow-lg p-6 relative group hover:-translate-y-1.5 transition-all duration-300 dark:bg-black dark:border-white/10"
+              className="relative group rounded-xl border border-white/10 p-6 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1"
             >
-              <span className="absolute -top-6 left-1/2 -translate-x-1/2 shadow-lg rounded-full dark:bg-white dark:text-black p-2 w-14 h-14 flex items-center justify-center animate-fade-in">
-                <feat.icon size={32} className="dark:text-black" strokeWidth={2.2} />
-              </span>
-              <h3 className="text-xl font-bold text-foreground text-center mt-10 mb-2 drop-shadow animate-fade-in">{feat.title}</h3>
-              <p className="text-foreground text-center text-base font-medium animate-fade-in">{feat.desc}</p>
+              <div className="absolute -inset-px bg-gradient-to-r from-blue-600 to-blue-400 rounded-xl opacity-0 group-hover:opacity-30 blur-lg transition-opacity"></div>
+              <div className="relative z-10">
+                <span className="flex items-center justify-center w-12 h-12 mb-4 rounded-full bg-blue-600/20 text-blue-400 mx-auto">
+                  <feature.icon size={24} />
+                </span>
+                <h3 className="text-lg font-semibold text-white text-center mb-1">{feature.title}</h3>
+                <p className="text-sm text-blue-200/80 text-center leading-relaxed">{feature.desc}</p>
+              </div>
             </div>
           ))}
         </div>
-      </section>
+        
+        {/* Types d'utilisateurs */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl mb-14">
+          <div className="relative rounded-xl overflow-hidden group border border-white/10 hover:border-blue-500/50 transition-all duration-300 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 to-black"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-600/20 via-transparent to-transparent opacity-60"></div>
+            <div className="relative p-8 z-10">
+              <h3 className="text-2xl font-bold text-white mb-4">Clients</h3>
+              <p className="text-blue-100/80 mb-6">Publiez des offres d'emploi et trouvez les meilleurs talents pour vos projets.</p>
+              <ul className="space-y-2 mb-8">
+                {["Publiez des offres d'emploi", "Recevez des candidatures ciblées", "Communiquez directement"].map((item, i) => (
+                  <li key={i} className="flex items-center text-sm text-white">
+                    <svg className="w-4 h-4 mr-2 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          
+          <div className="relative rounded-xl overflow-hidden group border border-white/10 hover:border-blue-500/50 transition-all duration-300 animate-fade-in" style={{ animationDelay: "0.4s" }}>
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 to-black"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-blue-600/20 via-transparent to-transparent opacity-60"></div>
+            <div className="relative p-8 z-10">
+              <h3 className="text-2xl font-bold text-white mb-4">Prestataires</h3>
+              <p className="text-blue-100/80 mb-6">Proposez vos services et soyez découvert par les entreprises qui ont besoin de vos compétences.</p>
+              <ul className="space-y-2 mb-8">
+                {["Publiez votre profil professionnel", "Proposez vos services", "Recevez des opportunités ciblées"].map((item, i) => (
+                  <li key={i} className="flex items-center text-sm text-white">
+                    <svg className="w-4 h-4 mr-2 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        {/* CTA */}
+        <div className="flex flex-col sm:flex-row gap-4 mt-6 animate-scale-in">
+          {currentUser ? (
+            <Button
+              asChild
+              size="lg"
+              className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white border-0 font-semibold shadow-lg shadow-blue-600/20 hover:shadow-blue-700/30 transform transition-all duration-200"
+            >
+              <Link to="/dashboard" className="flex items-center gap-2">
+                Accéder à mon compte
+                <ArrowRight size={18} />
+              </Link>
+            </Button>
+          ) : (
+            <>
+              <Button
+                asChild
+                size="lg"
+                className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white border-0 font-semibold shadow-lg shadow-blue-600/20 hover:shadow-blue-700/30 transform transition-all duration-200"
+              >
+                <Link to="/auth/login" className="flex items-center gap-2">
+                  Se connecter
+                  <ArrowRight size={18} />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="border-2 border-blue-500/30 text-blue-400 font-semibold bg-blue-500/5 hover:bg-blue-600/10 hover:border-blue-400/40 backdrop-blur-md shadow transition-all"
+              >
+                <Link to="/auth/register">
+                  Créer un compte
+                </Link>
+              </Button>
+            </>
+          )}
+        </div>
+      </main>
     </div>
   );
 }
