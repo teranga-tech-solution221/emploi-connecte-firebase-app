@@ -45,7 +45,6 @@ export function SidebarProvider({
   defaultExpanded?: boolean;
 }) {
   const [expanded, setExpanded] = useState(getInitialExpandedState);
-  const location = useLocation();
 
   // Save to localStorage whenever expanded state changes
   useEffect(() => {
@@ -90,7 +89,7 @@ export function Sidebar({
   return (
     <aside
       className={cn(
-        "h-screen bg-background fixed top-0 left-0 z-40 transition-width duration-300",
+        "h-screen fixed top-0 left-0 z-40 transition-all duration-300 bg-background",
         expanded ? "w-64" : "w-[70px]",
         className
       )}

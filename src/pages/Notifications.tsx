@@ -1,12 +1,11 @@
 
 import React from "react";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bell, Calendar, MessageSquare, User, FileText } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { useSidebar } from "@/components/ui/sidebar";
 
 const notifications = [
   {
@@ -63,7 +62,11 @@ const Notifications = () => {
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
-        <div className="flex-1 transition-all duration-300 ml-[70px] lg:ml-[70px] data-[sidebar-expanded=true]:ml-64">
+        <div 
+          className={`flex-1 transition-all duration-300 ${
+            expanded ? "ml-64" : "ml-[70px]"
+          }`}
+        >
           {/* Header */}
           <header className="shadow-sm border-b bg-background">
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">

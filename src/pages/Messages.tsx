@@ -83,7 +83,11 @@ const Messages = () => {
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
-        <div className="flex-1 transition-all duration-300 ml-[70px] lg:ml-[70px] data-[sidebar-expanded=true]:ml-64">
+        <div 
+          className={`flex-1 transition-all duration-300 ${
+            expanded ? "ml-64" : "ml-[70px]"
+          }`}
+        >
           {/* Header */}
           <header className="shadow-sm border-b bg-background">
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
