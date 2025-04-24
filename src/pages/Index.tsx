@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -23,7 +22,6 @@ export default function Index() {
         <div className="absolute inset-0 bg-blue-600 rounded-full blur-[100px] opacity-20 animate-pulse"></div>
       </div>
       
-      {/* Contenu principal */}
       <main className="container mx-auto flex flex-col items-center justify-center grow pt-20 pb-20 px-4 relative z-10">
         <div className="flex flex-col items-center space-y-2 mb-8 animate-fade-in">
           <h1 className="text-7xl font-bold text-white tracking-tight text-center mb-4 relative">
@@ -35,7 +33,7 @@ export default function Index() {
           </p>
         </div>
         
-        {/* Features display animé */}
+        {/* Features grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 w-full max-w-5xl mb-14 animate-scale-in">
           {[
             { icon: FileText, title: "Candidatures", desc: "Gérez vos opportunités professionnelles" },
@@ -100,7 +98,7 @@ export default function Index() {
           </div>
         </div>
         
-        {/* CTA */}
+        {/* CTA repositionné en haut */}
         <div className="flex flex-col sm:flex-row gap-4 mt-6 animate-scale-in">
           {currentUser ? (
             <Button
@@ -129,7 +127,7 @@ export default function Index() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-2 border-blue-500/30 text-blue-400 font-semibold bg-blue-500/5 hover:bg-blue-600/10 hover:border-blue-400/40 backdrop-blur-md shadow transition-all"
+                className="border-2 border-blue-500/30 text-blue-400 font-semibold bg-blue-500/5 hover:bg-blue-600/10 hover:border-blue-400/40 hover:text-white backdrop-blur-md shadow transition-all"
               >
                 <Link to="/auth/register">
                   Créer un compte

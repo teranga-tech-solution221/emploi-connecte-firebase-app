@@ -1,4 +1,3 @@
-
 import React from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -24,78 +23,78 @@ import { Calendar, MoreVertical, FileText, Building } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 
-// Exemple de candidatures
+// Exemple de candidatures avec la nouvelle structure
 const applications = [
   {
     id: 1,
-    position: "Senior Frontend Developer",
-    company: "Tech Solutions Inc.",
-    location: "San Francisco, CA (Remote)",
-    logo: null,
-    status: "Interview",
-    date: "Applied on Apr 10, 2025",
-    upcoming: {
-      type: "Interview",
-      date: "Apr 25, 2025",
-      time: "2:00 PM"
+    recruteur: "Marie Dupont",
+    metier: "Développeur Frontend Senior",
+    lieu: "Paris (Télétravail)",
+    salaire: "45-55k€",
+    statut: "Entretien",
+    date: "Posté le 10 Avr 2025",
+    prochainEvenement: {
+      type: "Entretien",
+      date: "25 Avr 2025",
+      heure: "14:00"
     }
   },
   {
     id: 2,
-    position: "UI/UX Designer",
-    company: "Creative Designs Co.",
-    location: "New York, NY",
-    logo: null,
-    status: "Applied",
-    date: "Applied on Apr 15, 2025",
-    upcoming: null
+    recruteur: "Jean Martin",
+    metier: "Designer UI/UX",
+    lieu: "Lyon",
+    salaire: null,
+    statut: "Postulé",
+    date: "Posté le 15 Avr 2025",
+    prochainEvenement: null
   },
   {
     id: 3,
-    position: "Full Stack Developer",
-    company: "Innovative Solutions",
-    location: "Austin, TX (Hybrid)",
-    logo: null,
-    status: "Screening",
-    date: "Applied on Apr 8, 2025",
-    upcoming: {
-      type: "Phone Screen",
-      date: "Apr 22, 2025",
-      time: "11:30 AM"
+    recruteur: "Sophie Lemaire",
+    metier: "Développeur Full Stack",
+    lieu: "Toulouse (Hybride)",
+    salaire: "50-60k€",
+    statut: "En cours",
+    date: "Posté le 8 Avr 2025",
+    prochainEvenement: {
+      type: "Appel téléphonique",
+      date: "22 Avr 2025",
+      heure: "11:30"
     }
   },
   {
     id: 4,
-    position: "Product Manager",
-    company: "Global Systems",
-    location: "Chicago, IL",
-    logo: null,
-    status: "Rejected",
-    date: "Applied on Apr 5, 2025",
-    upcoming: null
+    recruteur: "Pierre Richard",
+    metier: "Chef de Produit",
+    lieu: "Marseille",
+    salaire: null,
+    statut: "Refusé",
+    date: "Posté le 5 Avr 2025",
+    prochainEvenement: null
   },
   {
     id: 5,
-    position: "Backend Developer",
-    company: "Data Innovations Ltd.",
-    location: "Seattle, WA (Remote)",
-    logo: null,
-    status: "Offer",
-    date: "Applied on Mar 25, 2025",
-    upcoming: {
-      type: "Decision Deadline",
-      date: "Apr 30, 2025",
-      time: ""
+    recruteur: "Isabelle Garcia",
+    metier: "Développeur Backend",
+    lieu: "Nantes (Télétravail)",
+    salaire: "55-65k€",
+    statut: "Offre",
+    date: "Posté le 25 Mar 2025",
+    prochainEvenement: {
+      type: "Date limite de décision",
+      date: "30 Avr 2025",
+      heure: ""
     }
   },
 ];
 
 const statusColors: Record<string, string> = {
-  Applied: "bg-blue-100 text-blue-800 border-blue-200",
-  Screening: "bg-purple-100 text-purple-800 border-purple-200",
-  Interview: "bg-yellow-100 text-yellow-800 border-yellow-200",
-  Offer: "bg-green-100 text-green-800 border-green-200",
-  Rejected: "bg-red-100 text-red-800 border-red-200",
+  "Postulé": "bg-blue-100 text-blue-800 border-blue-200",
+  "En cours": "bg-purple-100 text-purple-800 border-purple-200",
+  "Entretien": "bg-yellow-100 text-yellow-800 border-yellow-200",
+  "Offre": "bg-green-100 text-green-800 border-green-200",
+  "Refusé": "bg-red-100 text-red-800 border-red-200",
 };
 
 const Applications = () => {
@@ -113,9 +112,9 @@ const Applications = () => {
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
               <div className="flex items-center gap-4">
                 <SidebarTrigger />
-                <h1 className="text-2xl font-bold text-gray-900">Applications</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Candidatures</h1>
               </div>
-              <Button>Add Application</Button>
+              <Button>Ajouter une candidature</Button>
             </div>
           </header>
 
@@ -123,14 +122,14 @@ const Applications = () => {
           <main className="p-4 sm:p-6 lg:p-8 space-y-6">
             <div className="flex flex-col sm:flex-row gap-4 items-end sm:items-center justify-between">
               <div className="w-full sm:max-w-xs">
-                <Input placeholder="Search applications..." />
+                <Input placeholder="Rechercher des candidatures..." />
               </div>
               <Tabs defaultValue="all">
                 <TabsList>
-                  <TabsTrigger value="all">All</TabsTrigger>
-                  <TabsTrigger value="active">Active</TabsTrigger>
-                  <TabsTrigger value="offers">Offers</TabsTrigger>
-                  <TabsTrigger value="rejected">Rejected</TabsTrigger>
+                  <TabsTrigger value="all">Tout</TabsTrigger>
+                  <TabsTrigger value="active">En cours</TabsTrigger>
+                  <TabsTrigger value="offers">Offres</TabsTrigger>
+                  <TabsTrigger value="rejected">Refusées</TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
@@ -141,11 +140,12 @@ const Applications = () => {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Company</th>
-                        <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Position</th>
-                        <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Status</th>
-                        <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Applied</th>
-                        <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Upcoming</th>
+                        <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Recruteur</th>
+                        <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Métier</th>
+                        <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Lieu</th>
+                        <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Salaire</th>
+                        <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Statut</th>
+                        <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Date</th>
                         <th className="text-right px-4 py-3 text-sm font-medium text-muted-foreground">Actions</th>
                       </tr>
                     </thead>
@@ -155,55 +155,47 @@ const Applications = () => {
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-3">
                               <Avatar className="h-8 w-8">
-                                <AvatarImage src={app.logo || ""} alt={app.company} />
-                                <AvatarFallback className="text-xs">{getInitials(app.company)}</AvatarFallback>
+                                <AvatarImage src={app.logo || ""} alt={app.recruteur} />
+                                <AvatarFallback className="text-xs">{getInitials(app.recruteur)}</AvatarFallback>
                               </Avatar>
                               <div>
-                                <p className="font-medium text-sm">{app.company}</p>
-                                <p className="text-xs text-muted-foreground">{app.location}</p>
+                                <p className="font-medium text-sm">{app.recruteur}</p>
                               </div>
                             </div>
                           </td>
                           <td className="px-4 py-3">
-                            <p className="font-medium text-sm">{app.position}</p>
+                            <p className="font-medium text-sm">{app.metier}</p>
                           </td>
                           <td className="px-4 py-3">
-                            <Badge variant="outline" className={`${statusColors[app.status]}`}>
-                              {app.status}
+                            <p className="text-sm">{app.lieu}</p>
+                          </td>
+                          <td className="px-4 py-3">
+                            <p className="text-sm">{app.salaire || "-"}</p>
+                          </td>
+                          <td className="px-4 py-3">
+                            <Badge variant="outline" className={`${statusColors[app.statut]}`}>
+                              {app.statut}
                             </Badge>
                           </td>
                           <td className="px-4 py-3">
                             <p className="text-sm text-muted-foreground">{app.date}</p>
-                          </td>
-                          <td className="px-4 py-3">
-                            {app.upcoming ? (
-                              <div className="flex items-center gap-1">
-                                <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
-                                <p className="text-sm">
-                                  {app.upcoming.type}: {app.upcoming.date} 
-                                  {app.upcoming.time && ` at ${app.upcoming.time}`}
-                                </p>
-                              </div>
-                            ) : (
-                              <p className="text-sm text-muted-foreground">-</p>
-                            )}
                           </td>
                           <td className="px-4 py-3 text-right">
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" size="icon" className="h-8 w-8">
                                   <MoreVertical className="h-4 w-4" />
-                                  <span className="sr-only">Open menu</span>
+                                  <span className="sr-only">Ouvrir le menu</span>
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
-                                <DropdownMenuItem>View Details</DropdownMenuItem>
-                                <DropdownMenuItem>Edit Application</DropdownMenuItem>
-                                <DropdownMenuItem>Add Note</DropdownMenuItem>
-                                <DropdownMenuItem>Schedule Event</DropdownMenuItem>
+                                <DropdownMenuItem>Voir les détails</DropdownMenuItem>
+                                <DropdownMenuItem>Modifier</DropdownMenuItem>
+                                <DropdownMenuItem>Ajouter une note</DropdownMenuItem>
+                                <DropdownMenuItem>Planifier un événement</DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem className="text-destructive">
-                                  Delete Application
+                                  Supprimer
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
@@ -221,12 +213,12 @@ const Applications = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Calendar className="h-5 w-5" />
-                    <span>Upcoming Events</span>
+                    <span>Événements à venir</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {applications
-                    .filter(app => app.upcoming)
+                    .filter(app => app.prochainEvenement)
                     .slice(0, 3)
                     .map(app => (
                       <div key={`event-${app.id}`} className="flex gap-4 items-start">
@@ -234,15 +226,15 @@ const Applications = () => {
                           <Calendar className="h-5 w-5" />
                         </div>
                         <div className="flex-1">
-                          <p className="font-medium">{app.upcoming?.type}</p>
-                          <p className="text-sm text-muted-foreground">{app.position} at {app.company}</p>
-                          <p className="text-sm">{app.upcoming?.date} {app.upcoming?.time}</p>
+                          <p className="font-medium">{app.prochainEvenement?.type}</p>
+                          <p className="text-sm text-muted-foreground">{app.metier} chez {app.recruteur}</p>
+                          <p className="text-sm">{app.prochainEvenement?.date} {app.prochainEvenement?.heure}</p>
                         </div>
                       </div>
                     ))}
-                  {applications.filter(app => app.upcoming).length === 0 && (
+                  {applications.filter(app => app.prochainEvenement).length === 0 && (
                     <div className="text-center py-4">
-                      <p className="text-muted-foreground">No upcoming events</p>
+                      <p className="text-muted-foreground">Aucun événement à venir</p>
                     </div>
                   )}
                 </CardContent>
@@ -252,27 +244,27 @@ const Applications = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Building className="h-5 w-5" />
-                    <span>Applications by Status</span>
+                    <span>Candidatures par statut</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {Object.entries(
                       applications.reduce((acc, app) => {
-                        acc[app.status] = (acc[app.status] || 0) + 1;
+                        acc[app.statut] = (acc[app.statut] || 0) + 1;
                         return acc;
                       }, {} as Record<string, number>)
-                    ).map(([status, count]) => (
-                      <div key={status} className="flex items-center gap-2">
-                        <Badge variant="outline" className={`${statusColors[status]}`}>
-                          {status}
+                    ).map(([statut, count]) => (
+                      <div key={statut} className="flex items-center gap-2">
+                        <Badge variant="outline" className={`${statusColors[statut]}`}>
+                          {statut}
                         </Badge>
                         <div className="flex-1 h-2 bg-muted overflow-hidden rounded-full">
                           <div 
-                            className={`h-full ${status === 'Offer' ? 'bg-green-500' : 
-                                                  status === 'Rejected' ? 'bg-red-500' : 
-                                                  status === 'Interview' ? 'bg-yellow-500' : 
-                                                  status === 'Screening' ? 'bg-purple-500' : 
+                            className={`h-full ${statut === 'Offre' ? 'bg-green-500' : 
+                                                  statut === 'Refusé' ? 'bg-red-500' : 
+                                                  statut === 'Entretien' ? 'bg-yellow-500' : 
+                                                  statut === 'En cours' ? 'bg-purple-500' : 
                                                   'bg-blue-500'}`}
                             style={{width: `${(count / applications.length) * 100}%`}}
                           ></div>

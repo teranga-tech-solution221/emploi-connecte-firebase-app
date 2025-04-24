@@ -1,4 +1,3 @@
-
 import { 
   Sidebar, 
   SidebarContent,
@@ -40,7 +39,6 @@ export function AppSidebar() {
   const location = useLocation();
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
-
   const { theme, setThemeMode } = useThemeMode();
 
   const getInitials = (name: string | null | undefined) => {
@@ -63,7 +61,9 @@ export function AppSidebar() {
             <div className="bg-blue-500/10 p-1 rounded">
               <Home className="h-6 w-6 text-blue-500" />
             </div>
-            <span className="text-lg font-bold text-blue-50">JL</span>
+            <span className={`text-base font-bold ${isDark ? 'text-blue-50' : 'text-gray-900'}`}>
+              Jokko Liguey
+            </span>
           </div>
           <button
             aria-label={isDark ? "Activer le mode clair" : "Activer le mode sombre"}
