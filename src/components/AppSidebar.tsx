@@ -57,7 +57,7 @@ export function AppSidebar() {
   const isDark = theme === "dark";
 
   return (
-    <Sidebar className="border-r border-border h-screen fixed top-0 left-0">
+    <Sidebar className="border-r border-border">
       <SidebarHeader className="pb-0">
         <div className="flex items-center px-4 py-3">
           <div className="flex-1 flex items-center space-x-2">

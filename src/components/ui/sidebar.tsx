@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useLocation } from "react-router-dom";
 
 // Types
 type SidebarContextProps = {
@@ -20,6 +21,12 @@ type SidebarContextProps = {
 
 // Context
 const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);
+
+// Store sidebar state in localStorage to persist across page navigation
+const getInitialExpandedState = (): boolean => {
+  const savedState = localStorage.getItem('sidebarExpanded');
+  return savedState !== null ? JSON.parse(savedState) : true;
+};
 
 export function useSidebar() {
   const context = useContext(SidebarContext);
@@ -37,7 +44,13 @@ export function SidebarProvider({
   children: React.ReactNode;
   defaultExpanded?: boolean;
 }) {
-  const [expanded, setExpanded] = useState(defaultExpanded);
+  const [expanded, setExpanded] = useState(getInitialExpandedState);
+  const location = useLocation();
+
+  // Save to localStorage whenever expanded state changes
+  useEffect(() => {
+    localStorage.setItem('sidebarExpanded', JSON.stringify(expanded));
+  }, [expanded]);
 
   const toggleExpanded = () => {
     setExpanded((prev) => !prev);
@@ -51,7 +64,6 @@ export function SidebarProvider({
 }
 
 // Composants
-
 export function SidebarTrigger({ className }: { className?: string }) {
   const { toggleExpanded } = useSidebar();
   return (
@@ -78,7 +90,7 @@ export function Sidebar({
   return (
     <aside
       className={cn(
-        "h-screen flex flex-col bg-background transition-all duration-300 z-40",
+        "h-screen bg-background fixed top-0 left-0 z-40 transition-width duration-300",
         expanded ? "w-64" : "w-[70px]",
         className
       )}

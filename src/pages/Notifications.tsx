@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bell, Calendar, MessageSquare, User, FileText } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { useSidebar } from "@/components/ui/sidebar";
 
 const notifications = [
   {
@@ -56,11 +57,13 @@ const notifications = [
 ];
 
 const Notifications = () => {
+  const { expanded } = useSidebar();
+  
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
-        <div className="flex-1 ml-[70px] lg:ml-64"> {/* Ajout de marge pour compenser la sidebar fixe */}
+        <div className="flex-1 transition-all duration-300 ml-[70px] lg:ml-[70px] data-[sidebar-expanded=true]:ml-64">
           {/* Header */}
           <header className="shadow-sm border-b bg-background">
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -116,6 +119,6 @@ const Notifications = () => {
       </div>
     </SidebarProvider>
   );
-};
+}
 
 export default Notifications;

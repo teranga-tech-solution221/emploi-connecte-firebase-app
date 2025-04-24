@@ -79,7 +79,7 @@ export default function Applications() {
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gray-50">
         <AppSidebar />
-        <div className="flex-1 ml-[70px] lg:ml-64"> {/* Ajout de marge pour compenser la sidebar fixe */}
+        <div className="flex-1 transition-all duration-300 ml-[70px] lg:ml-[70px] data-[sidebar-expanded=true]:ml-64">
           {/* Header */}
           <header className="bg-white shadow-sm border-b">
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
