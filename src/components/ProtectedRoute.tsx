@@ -1,31 +1,31 @@
 
-import React, { ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import React from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import LoadingSpinner from "./LoadingSpinner";
 
-type ProtectedRouteProps = {
-  children: ReactNode;
+interface ProtectedRouteProps {
+  children: React.ReactNode;
   redirectIfAuthenticated?: boolean;
-  to?: string;
-};
+}
 
-const ProtectedRoute = ({ 
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
   children, 
-  redirectIfAuthenticated = false,
-  to = "/dashboard"
-}: ProtectedRouteProps) => {
+  redirectIfAuthenticated = false 
+}) => {
   const { currentUser, loading } = useAuth();
 
   if (loading) {
     return <LoadingSpinner />;
   }
 
-  if (redirectIfAuthenticated && currentUser) {
-    return <Navigate to={to} replace />;
+  // Si l'utilisateur est connecté et que redirectIfAuthenticated est true
+  if (currentUser && redirectIfAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
   }
 
-  if (!redirectIfAuthenticated && !currentUser) {
+  // Redirection vers le login si l'utilisateur n'est pas connecté et que ce n'est pas une page publique
+  if (!currentUser && !redirectIfAuthenticated) {
     return <Navigate to="/auth/login" replace />;
   }
 

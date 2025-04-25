@@ -13,7 +13,6 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
-import LoadingAnimation from "./pages/LoadingAnimation";
 import Messages from "./pages/Messages";
 import Notifications from "./pages/Notifications";
 import Applications from "./pages/Applications";
@@ -44,7 +43,7 @@ const App = () => (
             <Route 
               path="/auth/login" 
               element={
-                <ProtectedRoute redirectIfAuthenticated to="/loading-animation">
+                <ProtectedRoute redirectIfAuthenticated>
                   <Login />
                 </ProtectedRoute>
               } 
@@ -52,7 +51,7 @@ const App = () => (
             <Route 
               path="/auth/register" 
               element={
-                <ProtectedRoute redirectIfAuthenticated to="/loading-animation">
+                <ProtectedRoute redirectIfAuthenticated>
                   <Register />
                 </ProtectedRoute>
               } 
@@ -62,16 +61,6 @@ const App = () => (
               element={
                 <ProtectedRoute redirectIfAuthenticated>
                   <ForgotPassword />
-                </ProtectedRoute>
-              } 
-            />
-            
-            {/* Page d'animation après connexion */}
-            <Route 
-              path="/loading-animation" 
-              element={
-                <ProtectedRoute>
-                  <LoadingAnimation />
                 </ProtectedRoute>
               } 
             />

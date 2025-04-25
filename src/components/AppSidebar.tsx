@@ -1,3 +1,4 @@
+
 import { 
   Sidebar, 
   SidebarContent,
@@ -14,6 +15,7 @@ import {
 import { 
   Home, 
   Settings, 
+  MessageSquare, 
   Bell, 
   Search, 
   LogOut,
@@ -30,8 +32,9 @@ import React from "react"
 
 const menuItems = [
   { title: "Tableau de bord", icon: Home, path: "/dashboard" },
-  { title: "Candidatures", icon: FileText, path: "/applications" },
+  { title: "Messages", icon: MessageSquare, path: "/messages" },
   { title: "Notifications", icon: Bell, path: "/notifications" },
+  { title: "Candidatures", icon: FileText, path: "/applications" },
   { title: "Paramètres", icon: Settings, path: "/settings" },
 ]
 
@@ -39,6 +42,7 @@ export function AppSidebar() {
   const location = useLocation();
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
+
   const { theme, setThemeMode } = useThemeMode();
 
   const getInitials = (name: string | null | undefined) => {
@@ -51,23 +55,23 @@ export function AppSidebar() {
     navigate("/auth/login");
   };
 
+  // Optionnel : switch simple light/dark, jamais "system"
   const isDark = theme === "dark";
 
   return (
     <Sidebar className="border-r border-border">
       <SidebarHeader className="pb-0">
         <div className="flex items-center px-4 py-3">
-          <div className="flex-1 flex items-center space-x-2">
-            <div className="bg-blue-500/10 p-1 rounded">
-              <Home className="h-6 w-6 text-blue-500" />
+          <div className="flex-1 flex items-center gap-2">
+            <div className="bg-primary/10 p-1 rounded">
+              <Home className="h-6 w-6 text-primary" />
             </div>
-            <span className={`text-base font-bold ${isDark ? 'text-blue-50' : 'text-gray-900'}`}>
-              Jokko Liguey
-            </span>
+            <span className="font-semibold text-xl">FABUS</span>
           </div>
+          {/* SWITCH LIGHT/DARK */}
           <button
             aria-label={isDark ? "Activer le mode clair" : "Activer le mode sombre"}
-            className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-accent transition-colors"
+            className="ml-4 flex items-center justify-center w-9 h-9 rounded-full hover:bg-accent transition-colors"
             onClick={() => setThemeMode(isDark ? "light" : "dark")}
             type="button"
           >
