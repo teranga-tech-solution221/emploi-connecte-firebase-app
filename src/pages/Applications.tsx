@@ -1,4 +1,3 @@
-
 import React from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -7,7 +6,6 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ApplicationList from "@/components/applications/ApplicationList";
-import { useSidebar } from "@/components/ui/sidebar";
 
 // Exemple de candidatures
 const applications = [
@@ -76,17 +74,11 @@ const applications = [
 ];
 
 export default function Applications() {
-  const { expanded } = useSidebar();
-  
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gray-50">
         <AppSidebar />
-        <div 
-          className={`flex-1 transition-all duration-300 ${
-            expanded ? "ml-64" : "ml-[70px]"
-          }`}
-        >
+        <div className="flex-1">
           {/* Header */}
           <header className="bg-white shadow-sm border-b">
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">

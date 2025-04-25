@@ -1,275 +1,132 @@
+import { 
+  Sidebar, 
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarInput,
+} from "@/components/ui/sidebar"
+import { 
+  Home, 
+  Settings, 
+  Bell, 
+  Search, 
+  LogOut,
+  FileText
+} from "lucide-react"
+import { Link, useLocation } from "react-router-dom"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useAuth } from "@/contexts/AuthContext"
+import { Button } from "@/components/ui/button"
+import { useNavigate } from "react-router-dom"
+import { useThemeMode } from "@/hooks/useThemeMode"
+import { Sun, Moon } from "lucide-react"
+import React from "react"
 
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Menu } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useLocation } from "react-router-dom";
+const menuItems = [
+  { title: "Tableau de bord", icon: Home, path: "/dashboard" },
+  { title: "Candidatures", icon: FileText, path: "/applications" },
+  { title: "Notifications", icon: Bell, path: "/notifications" },
+  { title: "Paramètres", icon: Settings, path: "/settings" },
+]
 
-// Types
-type SidebarContextProps = {
-  expanded: boolean;
-  setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
-  toggleExpanded: () => void;
-};
+export function AppSidebar() {
+  const location = useLocation();
+  const { currentUser, logout } = useAuth();
+  const navigate = useNavigate();
+  const { theme, setThemeMode } = useThemeMode();
 
-// Context
-const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);
-
-// Store sidebar state in localStorage to persist across page navigation
-const getInitialExpandedState = (): boolean => {
-  const savedState = localStorage.getItem('sidebarExpanded');
-  return savedState !== null ? JSON.parse(savedState) : true;
-};
-
-export function useSidebar() {
-  const context = useContext(SidebarContext);
-  if (!context) {
-    throw new Error("useSidebar doit être utilisé à l'intérieur d'un SidebarProvider");
-  }
-  return context;
-}
-
-// Provider
-export function SidebarProvider({
-  children,
-  defaultExpanded = true,
-}: {
-  children: React.ReactNode;
-  defaultExpanded?: boolean;
-}) {
-  const [expanded, setExpanded] = useState(getInitialExpandedState);
-
-  // Save to localStorage whenever expanded state changes
-  useEffect(() => {
-    localStorage.setItem('sidebarExpanded', JSON.stringify(expanded));
-  }, [expanded]);
-
-  const toggleExpanded = () => {
-    setExpanded((prev) => !prev);
+  const getInitials = (name: string | null | undefined) => {
+    if (!name) return "U";
+    return name.charAt(0).toUpperCase();
   };
 
+  const handleLogout = async () => {
+    await logout();
+    navigate("/auth/login");
+  };
+
+  const isDark = theme === "dark";
+
   return (
-    <SidebarContext.Provider value={{ expanded, setExpanded, toggleExpanded }}>
-      {children}
-    </SidebarContext.Provider>
-  );
-}
-
-// Composants
-export function SidebarTrigger({ className }: { className?: string }) {
-  const { toggleExpanded } = useSidebar();
-  return (
-    <Button
-      variant="ghost"
-      size="icon"
-      className={cn("h-9 w-9", className)}
-      onClick={toggleExpanded}
-    >
-      <Menu className="h-5 w-5" />
-      <span className="sr-only">Ouvrir/Fermer le menu</span>
-    </Button>
-  );
-}
-
-export function Sidebar({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  const { expanded } = useSidebar();
-  return (
-    <aside
-      className={cn(
-        "h-screen fixed top-0 left-0 z-40 transition-all duration-300 bg-background",
-        expanded ? "w-64" : "w-[70px]",
-        className
-      )}
-    >
-      {children}
-    </aside>
-  );
-}
-
-export function SidebarHeader({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <header className={cn("shrink-0", className)}>
-      {children}
-    </header>
-  );
-}
-
-export function SidebarContent({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className={cn("flex-1 overflow-auto p-3", className)}>
-      {children}
-    </div>
-  );
-}
-
-export function SidebarFooter({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <footer className={cn("shrink-0 mt-auto", className)}>
-      {children}
-    </footer>
-  );
-}
-
-export function SidebarGroup({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className={cn("mb-4", className)}>
-      {children}
-    </div>
-  );
-}
-
-export function SidebarGroupLabel({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  const { expanded } = useSidebar();
-  return (
-    <div
-      className={cn(
-        "text-xs font-medium text-muted-foreground mb-2 px-3",
-        expanded ? "text-left" : "text-center",
-        className
-      )}
-    >
-      {expanded ? (
-        children
-      ) : (
-        <span className="opacity-0 transition-opacity">{children}</span>
-      )}
-    </div>
-  );
-}
-
-export function SidebarGroupContent({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className={cn("space-y-1", className)}>
-      {children}
-    </div>
-  );
-}
-
-export function SidebarMenu({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <nav className={cn("flex flex-col gap-1", className)}>
-      {children}
-    </nav>
-  );
-}
-
-export function SidebarMenuItem({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className={cn(className)}>
-      {children}
-    </div>
-  );
-}
-
-export function SidebarMenuButton({
-  className,
-  children,
-  asChild,
-  isActive,
-  tooltip,
-}: {
-  className?: string;
-  children: React.ReactNode;
-  asChild?: boolean;
-  isActive?: boolean;
-  tooltip?: string;
-}) {
-  const { expanded } = useSidebar();
-  const content = (
-    <div
-      className={cn(
-        "w-full flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
-        isActive
-          ? "bg-accent text-accent-foreground"
-          : "hover:bg-accent/50 hover:text-accent-foreground",
-        !expanded && "justify-center px-0",
-        className
-      )}
-    >
-      {asChild ? children : <span>{children}</span>}
-    </div>
-  );
-
-  if (!expanded && tooltip) {
-    return (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>{content}</TooltipTrigger>
-          <TooltipContent side="right">{tooltip}</TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    );
-  }
-
-  return content;
-}
-
-export function SidebarInput({ className, ...props }: React.ComponentProps<typeof Input>) {
-  const { expanded } = useSidebar();
-  return expanded ? (
-    <div className="relative">
-      <Input className={cn("pl-8", className)} {...props} />
-    </div>
-  ) : null;
+    <Sidebar className="border-r border-border">
+      <SidebarHeader className="pb-0">
+        <div className="flex items-center px-4 py-3">
+          <div className="flex-1 flex items-center space-x-2">
+            <div className="bg-blue-500/10 p-1 rounded">
+              <Home className="h-6 w-6 text-blue-500" />
+            </div>
+            <span className={`text-sm font-bold ${theme === 'dark' ? 'text-blue-50' : 'text-gray-900'}`}>
+              Jokko Liguey
+            </span>
+          </div>
+          <button
+            aria-label={theme === 'dark' ? "Activer le mode clair" : "Activer le mode sombre"}
+            className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-accent transition-colors"
+            onClick={() => setThemeMode(theme === 'dark' ? "light" : "dark")}
+            type="button"
+          >
+            {theme === 'dark' ? (
+              <Sun size={22} className="text-yellow-400" />
+            ) : (
+              <Moon size={20} className="text-gray-700" />
+            )}
+          </button>
+        </div>
+        <div className="px-3 pb-2">
+          <SidebarInput placeholder="Rechercher..." />
+        </div>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Menu</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {menuItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton 
+                    asChild 
+                    isActive={location.pathname === item.path}
+                    tooltip={item.title}
+                  >
+                    <Link to={item.path} className="flex items-center gap-3 px-3 py-2">
+                      <item.icon className="h-5 w-5" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <div className="px-3 py-2">
+          <div className="flex items-center gap-3 mb-2 p-2 rounded-md hover:bg-accent transition-colors">
+            <Avatar className="h-9 w-9">
+              <AvatarImage src={currentUser?.photoURL || ""} alt="Photo de profil" />
+              <AvatarFallback>{getInitials(currentUser?.displayName)}</AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <p className="font-medium truncate">{currentUser?.displayName || "Utilisateur"}</p>
+              <p className="text-xs text-muted-foreground truncate">{currentUser?.email}</p>
+            </div>
+          </div>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full justify-start gap-2" 
+            onClick={handleLogout}
+          >
+            <LogOut className="h-4 w-4" /> Se déconnecter
+          </Button>
+        </div>
+      </SidebarFooter>
+    </Sidebar>
+  )
 }

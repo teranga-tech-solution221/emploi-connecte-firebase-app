@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -33,13 +34,14 @@ import {
 } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { BarChart, Bar, PieChart, Pie, ResponsiveContainer, XAxis, YAxis, Cell, Tooltip, Legend } from "recharts";
 
 // Types d'utilisateur
 type UserType = "client" | "prestataire";
 
-// Données statistiques 
+// Données statistiques pour les deux types d'utilisateurs
 const clientStats = [
   { 
     title: "Offres publiées", 
@@ -79,7 +81,46 @@ const clientStats = [
   },
 ];
 
-// Données d'activité récente
+const prestatairesStats = [
+  { 
+    title: "Candidatures", 
+    count: 12, 
+    change: "+3 cette semaine", 
+    trend: "up", 
+    description: "Total des candidatures envoyées",
+    icon: FileText,
+    color: "blue"
+  },
+  { 
+    title: "Entretiens", 
+    count: 4, 
+    change: "+2 cette semaine", 
+    trend: "up", 
+    description: "Entretiens programmés",
+    icon: Calendar,
+    color: "yellow" 
+  },
+  { 
+    title: "Offres", 
+    count: 1, 
+    change: "+1 ce mois", 
+    trend: "up", 
+    description: "Offres d'emploi reçues",
+    icon: Briefcase,
+    color: "green"
+  },
+  { 
+    title: "Vues du profil", 
+    count: 43, 
+    change: "+8 cette semaine", 
+    trend: "up", 
+    description: "Nombre de visites sur votre profil",
+    icon: Eye,
+    color: "purple"
+  },
+];
+
+// Données d'activité récente pour les deux types d'utilisateurs
 const clientActivities = [
   {
     id: 1,
@@ -107,6 +148,36 @@ const clientActivities = [
     from: "Moussa Sow",
     time: "Il y a 3 jours",
     icon: CheckCircle,
+  },
+];
+
+const prestatairesActivities = [
+  {
+    id: 1,
+    type: "application",
+    title: "Candidature envoyée",
+    subject: "Développeur Frontend Senior",
+    company: "Tech Solutions Inc.",
+    time: "Il y a 2 heures",
+    icon: FileText,
+  },
+  {
+    id: 2,
+    type: "interview",
+    title: "Entretien programmé",
+    subject: "Designer UI/UX",
+    company: "Creative Designs Co.",
+    time: "Demain, 14:00",
+    icon: Calendar,
+  },
+  {
+    id: 3,
+    type: "offer",
+    title: "Offre reçue",
+    subject: "Développeur Backend",
+    company: "Data Innovations Ltd.",
+    time: "Il y a 3 jours",
+    icon: Briefcase,
   },
 ];
 
@@ -138,6 +209,15 @@ const clientChartData = [
   { name: 'Jui', candidates: 24 },
 ];
 
+const prestatairesChartData = [
+  { name: 'Jan', applications: 5 },
+  { name: 'Fév', applications: 8 },
+  { name: 'Mar', applications: 7 },
+  { name: 'Avr', applications: 12 },
+  { name: 'Mai', applications: 9 },
+  { name: 'Jui', applications: 14 },
+];
+
 // Données pour les statuts des candidatures
 const clientStatusData = [
   { status: "Reçues", count: 28, color: "#3b82f6" },
@@ -147,18 +227,24 @@ const clientStatusData = [
   { status: "Refusées", count: 10, color: "#ef4444" },
 ];
 
+const prestatairesStatusData = [
+  { status: "Postulé", count: 12, color: "#3b82f6" },
+  { status: "Présélection", count: 5, color: "#8b5cf6" },
+  { status: "Entretien", count: 4, color: "#f59e0b" },
+  { status: "Offre", count: 1, color: "#10b981" },
+  { status: "Refusé", count: 2, color: "#ef4444" },
+];
+
 const Dashboard = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
-  
-  // On utilise un type fixe, plus de sélection client/prestataire
-  const userType: UserType = "client";
+  const [userType, setUserType] = useState<UserType>("client");
 
-  // Sélectionner les données en fonction du type d'utilisateur fixe
-  const stats = clientStats;
-  const activities = clientActivities;
-  const chartData = clientChartData;
-  const statusData = clientStatusData;
+  // Sélectionner les données en fonction du type d'utilisateur
+  const stats = userType === "client" ? clientStats : prestatairesStats;
+  const activities = userType === "client" ? clientActivities : prestatairesActivities;
+  const chartData = userType === "client" ? clientChartData : prestatairesChartData;
+  const statusData = userType === "client" ? clientStatusData : prestatairesStatusData;
 
   const totalApplications = statusData.reduce((sum, stat) => sum + stat.count, 0);
 
@@ -184,7 +270,7 @@ const Dashboard = () => {
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
-        <div className="flex-1 ml-[70px] lg:ml-64">
+        <div className="flex-1">
           {/* Header */}
           <header className="bg-card shadow-sm border-b">
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -193,9 +279,18 @@ const Dashboard = () => {
                 <h1 className="text-2xl font-bold">Tableau de bord</h1>
               </div>
               <div className="flex items-center gap-3">
+                <Select value={userType} onValueChange={(value: UserType) => setUserType(value)}>
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="Type d'utilisateur" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="client">Client</SelectItem>
+                    <SelectItem value="prestataire">Prestataire</SelectItem>
+                  </SelectContent>
+                </Select>
                 <Button onClick={() => navigate('/applications')} className="gap-2">
                   <PlusCircle className="h-4 w-4" />
-                  Publier une offre
+                  {userType === "client" ? "Publier une offre" : "Nouvelle candidature"}
                 </Button>
               </div>
             </div>
@@ -235,7 +330,9 @@ const Dashboard = () => {
                 <CardHeader className="pb-2">
                   <CardTitle>Vue d'ensemble</CardTitle>
                   <CardDescription>
-                    Suivi des candidatures reçues sur les 6 derniers mois
+                    {userType === "client" 
+                      ? "Suivi des candidatures reçues sur les 6 derniers mois" 
+                      : "Suivi de vos candidatures sur les 6 derniers mois"}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -274,7 +371,7 @@ const Dashboard = () => {
                             <p className="text-sm font-medium">{activity.title}</p>
                             <p className="text-xs font-medium">{activity.subject}</p>
                             <p className="text-xs text-muted-foreground">
-                              {activity.from}
+                              {userType === "client" ? activity.from : activity.company}
                             </p>
                             <p className="text-xs text-muted-foreground mt-1">{activity.time}</p>
                           </div>
@@ -291,10 +388,12 @@ const Dashboard = () => {
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle>
-                    Statut des candidatures
+                    {userType === "client" ? "Statut des candidatures" : "Statut de vos candidatures"}
                   </CardTitle>
                   <CardDescription>
-                    Répartition des candidatures par statut
+                    {userType === "client" 
+                      ? "Répartition des candidatures par statut" 
+                      : "Suivi de vos candidatures par statut"}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -355,7 +454,9 @@ const Dashboard = () => {
                 <CardHeader>
                   <CardTitle>Chronologie des activités</CardTitle>
                   <CardDescription>
-                    Suivez les activités récentes sur vos offres
+                    {userType === "client" 
+                      ? "Suivez les activités récentes sur vos offres" 
+                      : "Suivez l'avancement de vos candidatures"}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -377,7 +478,7 @@ const Dashboard = () => {
                                 <p className="font-medium">{activity.title}</p>
                                 <p className="text-sm">{activity.subject}</p>
                                 <p className="text-sm text-muted-foreground">
-                                  {activity.from}
+                                  {userType === "client" ? activity.from : activity.company}
                                 </p>
                               </div>
                               <Badge variant="outline" className={`${
@@ -387,7 +488,7 @@ const Dashboard = () => {
                               }`}>
                                 {activity.type === "application" ? "Candidature" :
                                  activity.type === "interview" ? "Entretien" : 
-                                 activity.type === "offer" ? "Offre envoyée" : "Offre reçue"}
+                                 userType === "client" ? "Offre envoyée" : "Offre reçue"}
                               </Badge>
                             </div>
                             <p className="text-xs text-muted-foreground mt-2">{activity.time}</p>
@@ -434,14 +535,29 @@ const Dashboard = () => {
                   <div className="mt-6 pt-6 border-t">
                     <h4 className="text-sm font-medium mb-4">Actions suggérées</h4>
                     <div className="space-y-3">
-                      <Button variant="outline" size="sm" className="w-full justify-start gap-2">
-                        <PlusCircle className="h-4 w-4" />
-                        Publier une offre d'emploi
-                      </Button>
-                      <Button variant="outline" size="sm" className="w-full justify-start gap-2">
-                        <Users className="h-4 w-4" />
-                        Parcourir les prestataires
-                      </Button>
+                      {userType === "client" ? (
+                        <>
+                          <Button variant="outline" size="sm" className="w-full justify-start gap-2">
+                            <PlusCircle className="h-4 w-4" />
+                            Publier une offre d'emploi
+                          </Button>
+                          <Button variant="outline" size="sm" className="w-full justify-start gap-2">
+                            <Users className="h-4 w-4" />
+                            Parcourir les prestataires
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button variant="outline" size="sm" className="w-full justify-start gap-2">
+                            <PlusCircle className="h-4 w-4" />
+                            Postuler à une offre
+                          </Button>
+                          <Button variant="outline" size="sm" className="w-full justify-start gap-2">
+                            <User className="h-4 w-4" />
+                            Compléter votre profil
+                          </Button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </CardContent>
