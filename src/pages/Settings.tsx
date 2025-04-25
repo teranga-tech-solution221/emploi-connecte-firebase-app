@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -80,14 +79,6 @@ const Settings = () => {
       setIsLoading(false);
       setPhotoLoading(false);
     }
-  };
-
-  // Add the missing handleSaveChanges function
-  const handleSaveChanges = () => {
-    toast({
-      title: "Modifications enregistrées",
-      description: "Vos préférences ont été mises à jour avec succès."
-    });
   };
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {

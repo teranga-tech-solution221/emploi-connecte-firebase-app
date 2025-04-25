@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar"
 import { 
   Home, 
+  User, 
   Settings, 
   MessageSquare, 
   Bell, 
@@ -32,6 +33,7 @@ import React from "react"
 
 const menuItems = [
   { title: "Tableau de bord", icon: Home, path: "/dashboard" },
+  { title: "Profil", icon: User, path: "/profile" },
   { title: "Messages", icon: MessageSquare, path: "/messages" },
   { title: "Notifications", icon: Bell, path: "/notifications" },
   { title: "Candidatures", icon: FileText, path: "/applications" },
