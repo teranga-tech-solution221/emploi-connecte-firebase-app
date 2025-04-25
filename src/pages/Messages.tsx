@@ -1,6 +1,6 @@
 
 import React from "react";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -73,6 +73,8 @@ const conversation = [
 ];
 
 const Messages = () => {
+  const { expanded } = useSidebar();
+  
   const getInitials = (name: string) => {
     return name.split(" ").map(part => part[0]).join("").toUpperCase();
   };
@@ -81,7 +83,11 @@ const Messages = () => {
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
-        <div className="flex-1">
+        <div 
+          className={`flex-1 transition-all duration-300 ${
+            expanded ? "ml-64" : "ml-[70px]"
+          }`}
+        >
           {/* Header */}
           <header className="shadow-sm border-b bg-background">
             <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
